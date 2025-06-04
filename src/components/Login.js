@@ -37,7 +37,8 @@ const Login = () => {
 
       // Store auth data in localStorage
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('username', response.data.username); // This should come from backend
+      localStorage.setItem('username', response.data.username); // ✔️ Required
+      localStorage.setItem('userEmail', response.data.email);   // ✔️ Optional fallback
       localStorage.setItem('isLoggedIn', 'true');
 
       // Redirect to homepage

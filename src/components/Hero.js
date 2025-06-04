@@ -17,9 +17,8 @@ const Hero = () => {
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
 
-  const displayName = formatName(username || (email && email.split('@')[0]));
-  const getInitial = (name) => (name ? name.charAt(0).toUpperCase() : 'G');
-
+    const displayName = username || (email ? email.split('@')[0] : 'Guest');
+    const getInitial = (name) => (name ? name.charAt(0).toUpperCase() : 'G');
   return (
     <section className="px-4 sm:px-6 md:px-10 lg:px-16 py-14 text-center bg-gray-50">
       <h1 className="text-5xl sm:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
