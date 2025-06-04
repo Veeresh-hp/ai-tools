@@ -61,9 +61,9 @@ const toolsData = [
     id: 'presentation-tools',
     name: 'AI Presentation Tools',
     tools: [
-      { name: 'Simplified', description: 'Create presentations, video editing, and write content with AI.', icon: 'fas fa-chalkboard-teacher', comingSoon: true, badge: 'Recommended' },
+      { name: 'Simplified', description: 'Create presentations, video editing, and write content with AI.',url:'https://simplified.com/',icon: 'fas fa-chalkboard-teacher', comingSoon: false , badge: 'Recommended' },
       { name: 'Tome AI', description: 'Create compelling presentations from prompts using AI.', url: 'https://tome.app', icon: 'fas fa-chalkboard-teacher', comingSoon: false },
-      { name: 'Gamma AI', description: 'Make customizable presentations and web pages in minutes.', icon: 'fas fa-chalkboard-teacher', comingSoon: true, badge: 'Recommended' },
+      { name: 'Gamma AI', description: 'Make customizable presentations and web pages in minutes.',url:'https://gamma.app/' ,icon: 'fas fa-chalkboard-teacher', comingSoon: false , badge: 'Recommended' },
     ],
   },
   {
@@ -79,7 +79,7 @@ const toolsData = [
     id: 'marketing-tools',
     name: 'AI Marketing Tools',
     tools: [
-      { name: 'EasyGen', description: 'Automate LinkedIn content, connect with top people, 10% off with code "VAIBHAV".', icon: 'fas fa-bullhorn', comingSoon: true, badge: 'Recommended' },
+      { name: 'EasyGen', description: 'Automate LinkedIn content, connect with top people, 10% off with code "VAIBHAV".',url:'https://www.easygen.io/', icon: 'fas fa-bullhorn', comingSoon: false, badge: 'Recommended' },
       { name: 'Contlo AI', description: 'Your personal AI marketer.', url: 'https://www.contlo.com', icon: 'fas fa-bullhorn', comingSoon: false },
       { name: 'Looka AI', description: 'Design your brand with AI in 1 click.', url: 'https://looka.com', icon: 'fas fa-bullhorn', comingSoon: false },
       { name: 'Waymark AI', description: 'Create business commercials with AI in 1 click.', url: 'https://www.waymark.com', icon: 'fas fa-bullhorn', comingSoon: false },
@@ -90,9 +90,9 @@ const toolsData = [
     id: 'voice-tools',
     name: 'AI Voice/Audio Tools',
     tools: [
-      { name: 'Eleven Labs', description: 'Generate ultra-realistic human voice from scripts.', icon: 'fas fa-microphone', comingSoon: true, badge: 'Recommended' },
-      { name: 'Hume AI', description: 'Emotional AI voice generation with human-like tone.', icon: 'fas fa-microphone', comingSoon: true, badge: 'Recommended' },
-      { name: 'DupDub', description: 'AI avatars, 150+ realistic voices, and video dubbing.', icon: 'fas fa-microphone', comingSoon: true, badge: 'Recommended' },
+      { name: 'Eleven Labs', description: 'Generate ultra-realistic human voice from scripts.',url:'https://elevenlabs.io/' ,icon: 'fas fa-microphone', comingSoon: false , badge: 'Recommended' },
+      { name: 'Hume AI', description: 'Emotional AI voice generation with human-like tone.',url:'https://www.hume.ai/' ,icon: 'fas fa-microphone', comingSoon: true, badge: 'Recommended' },
+      { name: 'DupDub', description: 'AI avatars, 150+ realistic voices, and video dubbing.',url:'https://www.dupdub.com/', icon: 'fas fa-microphone', comingSoon: true, badge: 'Recommended' },
       { name: 'Podcastle AI', description: 'Create, edit, and host podcasts using AI tools.', url: 'https://podcastle.ai', icon: 'fas fa-microphone', comingSoon: false },
       { name: 'Voice Maker', description: 'Create AI voiceovers for commercial use.', url: 'https://voicemaker.in', icon: 'fas fa-microphone', comingSoon: false },
       { name: 'Speechify', description: 'Read text aloud using AI on any device.', url: 'https://speechify.com', icon: 'fas fa-microphone', comingSoon: false },
