@@ -2,7 +2,8 @@ import React from 'react';
 
 const Hero = () => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const username = localStorage.getItem('username'); // Fetch username
+  const username = localStorage.getItem('username');
+  const email = localStorage.getItem('userEmail');
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -11,6 +12,14 @@ const Hero = () => {
     return 'Good evening';
   };
 
+  const formatName = (name) => {
+    if (!name) return 'Guest';
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  };
+
+  const displayName = formatName(username || (email && email.split('@')[0]));
+  const getInitial = (name) => (name ? name.charAt(0).toUpperCase() : 'G');
+
   return (
     <section className="px-4 sm:px-6 md:px-10 lg:px-16 py-14 text-center bg-gray-50">
       <h1 className="text-5xl sm:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
@@ -18,13 +27,15 @@ const Hero = () => {
       </h1>
 
       {isLoggedIn && (
-        <p className="text-xl text-gray-700 mb-4">
-          {getGreeting()},{' '}
-          <span className="font-semibold">
-            {username || 'Guest'}
-          </span>
-          ! Explore our curated AI tools below.
-        </p>
+        <div className="flex justify-center items-center gap-4 mb-4">
+          <div className="w-10 h-10 flex items-center justify-center bg-red-600 text-white font-bold rounded-full text-lg shadow">
+            {getInitial(displayName)}
+          </div>
+          <p className="text-xl text-gray-700">
+            {getGreeting()},{' '}
+            <span className="font-semibold">{displayName}</span>! Explore our curated AI tools below.
+          </p>
+        </div>
       )}
 
       <p className="text-lg text-gray-600 mb-8 max-w-xl mx-auto">
