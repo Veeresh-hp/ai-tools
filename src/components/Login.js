@@ -34,8 +34,13 @@ const Login = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(`${API_URL}/api/auth/login`, formData);
+
+      // Store auth data in localStorage
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('username', response.data.username); // This should come from backend
       localStorage.setItem('isLoggedIn', 'true');
+
+      // Redirect to homepage
       history.push('/');
       window.location.reload();
     } catch (error) {
@@ -51,8 +56,10 @@ const Login = () => {
     <section className="px-4 py-10 max-w-md mx-auto">
       <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
       <div className="bg-white p-6 rounded shadow">
-        {errors.general && <p className="text-red-600 text-sm mb-4 text-center">{errors.general}</p>}
-        <div className="space-y-4">
+        {errors.general && (
+          <p className="text-red-600 text-sm mb-4 text-center">{errors.general}</p>
+        )}
+        <form onSubmit={handleLogin} className="space-y-4">
           <InputField
             label="Email or Username"
             name="identifier"
@@ -69,13 +76,19 @@ const Login = () => {
             onChange={handleChange}
             error={errors.password}
           />
-          <button onClick={handleLogin} disabled={isLoading} className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:bg-blue-400">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:bg-blue-400"
+          >
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
-        </div>
+        </form>
         <p className="text-xs text-center mt-4">
           Don't have an account?{' '}
-          <Link to="/signup" className="text-blue-600 hover:underline">Sign up</Link>
+          <Link to="/signup" className="text-blue-600 hover:underline">
+            Sign up
+          </Link>
         </p>
       </div>
     </section>
@@ -90,7 +103,9 @@ const InputField = ({ label, name, type, value, onChange, error }) => (
       type={type}
       value={value}
       onChange={onChange}
-      className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-300 bg-red-50' : 'border-gray-300'}`}
+      className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+        error ? 'border-red-300 bg-red-50' : 'border-gray-300'
+      }`}
       placeholder={`Enter your ${label.toLowerCase()}`}
     />
     {error && <p className="text-red-600 text-xs mt-1">{error}</p>}

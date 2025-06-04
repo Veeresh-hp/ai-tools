@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero = () => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const userEmail = localStorage.getItem('userEmail');
+  const username = localStorage.getItem('username'); // Fetch username
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -21,7 +21,7 @@ const Hero = () => {
         <p className="text-xl text-gray-700 mb-4">
           {getGreeting()},{' '}
           <span className="font-semibold">
-            {userEmail || 'Guest'}
+            {username || 'Guest'}
           </span>
           ! Explore our curated AI tools below.
         </p>

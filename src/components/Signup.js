@@ -45,6 +45,7 @@ const Signup = () => {
     try {
       const response = await axios.post(`${API_URL}/api/auth/signup`, formData);
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('username', response.data.username); // Do this in both login and signup responses
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userEmail', formData.email);
       history.push('/');
