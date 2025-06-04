@@ -1,0 +1,13 @@
+$env:NODE_OPTIONS="--openssl-legacy-provider"
+npm start
+
+
+
+aiToolHub
+7IUmbng2SEon1ex7
+
+mongodb+srv://aiToolHub:<db_password>@cluster0.3606h3j.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+
+npm install -g serve
+serve -s build

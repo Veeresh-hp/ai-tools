@@ -1,0 +1,11 @@
+/* Active Filter Button */
+.filter-btn.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* Navbar Hover Effects */
+nav ul li a:hover,
+nav button:hover {
+  color: #3b82f6;
+}
