@@ -11,3 +11,14 @@ mongodb+srv://aiToolHub:<db_password>@cluster0.3606h3j.mongodb.net/?retryWrites=
 
 npm install -g serve
 serve -s build
+
+for frontend
+git add .
+ git commit -m "Add username with avatar"
+ git push origin master
+ vercel --prod
+
+for backend
+git add .
+ git commit -m "Add username with avatar"
+ git push origin main
