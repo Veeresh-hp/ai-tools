@@ -15,7 +15,8 @@ const Login = () => {
   const [resetError, setResetError] = useState('');
   const history = useHistory();
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+  // *** Replace with your actual Render backend URL here ***
+  const API_URL = process.env.REACT_APP_API_URL || 'https://ai-tools-hub-backend-u2v6.onrender.com';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -190,12 +191,8 @@ const Login = () => {
                 </button>
               </div>
               <form onSubmit={handleResetSubmit} className="space-y-4">
-                {resetMessage && (
-                  <p className="text-green-600 text-sm">{resetMessage}</p>
-                )}
-                {resetError && (
-                  <p className="text-red-600 text-sm">{resetError}</p>
-                )}
+                {resetMessage && <p className="text-green-600 text-sm">{resetMessage}</p>}
+                {resetError && <p className="text-red-600 text-sm">{resetError}</p>}
                 <div>
                   <label htmlFor="reset-email" className="block text-sm font-medium text-gray-700">
                     Email
