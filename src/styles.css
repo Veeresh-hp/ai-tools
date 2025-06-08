@@ -1,0 +1,45 @@
+/* src/styles.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-dropdown {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.mobile-menu-slide {
+  animation: slideDown 0.3s ease-out;
+}
+
+.dropdown-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.dropdown-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Custom styles for Header */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* Smooth transitions for theme changes */
+html {
+  transition: background-color 0.3s, color 0.3s ease-in-out;
+}

@@ -1,9 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #fff;
+  @apply bg-white text-black m-0;
 }
+
+.dark body {
+  @apply bg-gray-900 text-white m-0;
+}
+
+
 
 html {
   scroll-behavior: smooth;

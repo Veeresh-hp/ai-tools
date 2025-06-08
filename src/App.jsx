@@ -1,53 +1,57 @@
-   import React, { useState } from 'react';
-   import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-   import Navbar from './components/Navbar';
-   import Hero from './components/Hero';
-   import ToolsSection from './components/ToolsSection';
-   import Footer from './components/Footer';
-   import ComingSoonModal from './components/ComingSoonModal';
-   import Login from './components/Login';
-   import Signup from './components/Signup';
-   import About from './components/About';
-   import Contact from './components/Contact';
-   import ResetPassword from './components/ResetPassword';
-   import './App.css';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Header from './components/Header';
+import Hero from './components/Hero';
+import ToolsSection from './components/ToolsSection';
+import Footer from './components/Footer';
+import ComingSoonModal from './components/ComingSoonModal';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import About from './components/About';
+import Contact from './components/Contact';
+import ResetPassword from './components/ResetPassword';
+import './App.css';
 
-   function App() {
-     const [isModalOpen, setIsModalOpen] = useState(false);
+function App() {
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark' ||
+      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  });
 
-     const openModal = () => setIsModalOpen(true);
-     const closeModal = () => setIsModalOpen(false);
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
 
-     return (
-       <Router>
-         <div className="bg-white text-gray-900">
-           <Navbar />
-           <Switch>
-             <Route exact path="/">
-               <Hero />
-               <ToolsSection openModal={openModal} />
-             </Route>
-             <Route path="/login">
-               <Login />
-             </Route>
-             <Route path="/signup">
-               <Signup />
-             </Route>
-             <Route path="/about">
-               <About />
-             </Route>
-             <Route path="/contact">
-               <Contact />
-             </Route>
-             <Route path="/reset-password">
-               <ResetPassword />
-             </Route>
-           </Switch>
-           <Footer />
-           {isModalOpen && <ComingSoonModal closeModal={closeModal} />}
-         </div>
-       </Router>
-     );
-   }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
-   export default App;
+  return (
+    <Router>
+      <div className="bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300 min-h-screen">
+        <Header />
+        <Switch>
+          <Route exact path="/">
+            <Hero />
+            <ToolsSection openModal={openModal} />
+          </Route>
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/reset-password" component={ResetPassword} />
+        </Switch>
+        <Footer />
+        {isModalOpen && <ComingSoonModal closeModal={closeModal} />}
+      </div>
+    </Router>
+  );
+}
+
+export default App;

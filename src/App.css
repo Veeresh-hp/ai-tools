@@ -9,3 +9,118 @@ nav ul li a:hover,
 nav button:hover {
   color: #3b82f6;
 }
+
+/* src/App.css */
+.fas:hover {
+  transform: rotate(360deg);
+  transition: transform 0.5s;
+}
+
+.tool-card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s;
+}
+
+/* Tailwind Custom Animation in global.css or tailwind.config.js */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease forwards;
+}
+
+.coming-soon-badge {
+  background-color: #facc15; /* yellow-400 */
+  color: #1f2937; /* gray-800 */
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+body {
+  background-color: white;
+}
+
+/* Optional global dark mode styles */
+body.dark {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+}
+
+
+@layer utilities {
+  .animate-fade-in {
+    @apply opacity-0;
+    animation: fadeIn 0.2s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.category-section {
+  scroll-margin-top: 80px; /* Adjust for fixed header */
+}
+.nav-btn:hover::after {
+  content: '😜';
+  margin-left: 4px;
+  display: inline-block;
+  animation: bounce 0.3s;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
