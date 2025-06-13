@@ -2,17 +2,23 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { ThemeContext } from '../contexts/ThemeContext';
 import './Header.css';
+import PageWrapper from './PageWrapper';
 
 const Header = () => {
   const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
+  const accountRef = useRef(null);
+  const accountButtonRef = useRef(null);
   const closeTimeoutRef = useRef(null);
-  const history = useHistory();
+  const accountCloseTimeoutRef = useRef(null);
+  const history = useHistory(); // ✅ useHistory for v5
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,21 +43,39 @@ const Header = () => {
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
   };
 
+  const openAccountDropdown = () => {
+    if (accountCloseTimeoutRef.current) clearTimeout(accountCloseTimeoutRef.current);
+    setIsAccountDropdownOpen(true);
+  };
+
+  const closeAccountDropdownWithDelay = () => {
+    accountCloseTimeoutRef.current = setTimeout(() => {
+      setIsAccountDropdownOpen(false);
+    }, 300);
+  };
+
+  const cancelCloseAccountDropdown = () => {
+    if (accountCloseTimeoutRef.current) clearTimeout(accountCloseTimeoutRef.current);
+  };
+
   useEffect(() => {
-    if (!isDropdownOpen) return;
     const handleClickOutside = (e) => {
       if (
-        dropdownRef.current &&
-        buttonRef.current &&
-        !dropdownRef.current.contains(e.target) &&
-        !buttonRef.current.contains(e.target)
+        dropdownRef.current && buttonRef.current &&
+        !dropdownRef.current.contains(e.target) && !buttonRef.current.contains(e.target)
       ) {
         setIsDropdownOpen(false);
+      }
+      if (
+        accountRef.current && accountButtonRef.current &&
+        !accountRef.current.contains(e.target) && !accountButtonRef.current.contains(e.target)
+      ) {
+        setIsAccountDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isDropdownOpen]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -60,22 +84,22 @@ const Header = () => {
   };
 
   const categories = [
-    { name: '🎬 Faceless AI Video', id: 'faceless-video' },
-    { name: '📹 AI Video Generators', id: 'video-generators' },
-    { name: '✍️ AI Writing Tools', id: 'writing-tools' },
-    { name: '📊 AI Presentation Tools', id: 'presentation-tools' },
-    { name: '✂️ AI Short Clippers', id: 'short-clippers' },
-    { name: '📈 AI Marketing Tools', id: 'marketing-tools' },
-    { name: '🎤 AI Voice/Audio Tools', id: 'voice-tools' },
-    { name: '🌐 AI Website Builders', id: 'website-builders' },
-    { name: '🖼️ AI Image Generators', id: 'image-generators' },
-    { name: '🤖 ChatGPT Alternatives', id: 'chatbots' },
-    { name: '🎵 AI Music Generators', id: 'music-generators' },
-    { name: '🧠 AI Data Analysis Tools', id: 'data-analysis' },
-    { name: '📐 UML, ER, Use Case Diagrams', id: 'ai-diagrams' },
-    { name: '🎮 AI Gaming Tools', id: 'gaming-tools' },
-    { name: '🧪 Other AI Tools', id: 'other-tools' },
-    { name: '🛠️ Utility Tools', id: 'utility-tools' },
+    { name: 'Faceless AI Video', id: 'faceless-video' },
+    { name: 'AI Video Generators', id: 'video-generators' },
+    { name: 'AI Writing Tools', id: 'writing-tools' },
+    { name: 'AI Presentation Tools', id: 'presentation-tools' },
+    { name: 'AI Short Clippers', id: 'short-clippers' },
+    { name: 'AI Marketing Tools', id: 'marketing-tools' },
+    { name: 'AI Voice Tools', id: 'voice-tools' },
+    { name: 'AI Website Builders', id: 'website-builders' },
+    { name: 'AI Image Generators', id: 'image-generators' },
+    { name: 'ChatGPT Alternatives', id: 'chatbots' },
+    { name: 'AI Music Tools', id: 'music-generators' },
+    { name: 'AI Data Tools', id: 'data-analysis' },
+    { name: 'AI Diagrams', id: 'ai-diagrams' },
+    { name: 'AI Gaming Tools', id: 'gaming-tools' },
+    { name: 'Other AI Tools', id: 'other-tools' },
+    { name: 'Utility Tools', id: 'utility-tools' },
   ];
 
   const handleCategoryClick = (id) => {
@@ -101,10 +125,9 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <PageWrapper>
       <header className="fixed top-0 left-0 w-full border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-700 z-50">
         <nav className="flex items-center justify-between px-4 sm:px-6 md:px-10 lg:px-5 h-16">
-          {/* Logo */}
           <Link
             to="/"
             className="flex items-center text-xl font-extrabold text-red-600 dark:text-red-400 hover:scale-105 transition-all duration-200"
@@ -113,63 +136,87 @@ const Header = () => {
             <i className="fas fa-bolt mr-2"></i> AI Tools Hub
           </Link>
 
-          {/* Desktop Nav */}
-          <ul className="hidden sm:flex items-center space-x-4 text-sm">
+          <ul className="hidden sm:flex items-center space-x-6 text-sm font-semibold">
             {[
-              ['chatbots', '🤖', 'CHATBOTS'],
-              ['image-generators', '🖼️', 'IMAGE GENERATORS'],
-              ['music-generators', '🎵', 'MUSIC TOOLS'],
-              ['data-analysis', '📊', 'DATA TOOLS'],
-              ['ai-diagrams', '📐', 'AI DIAGRAMS'],
-              ['writing-tools', '✍️', 'TEXT TOOLS'],
-              ['video-generators', '📹', 'VIDEO TOOLS'],
-            ].map(([id, emoji, label]) => (
-              <li key={id}>
-                <button
-                  onClick={() => handleCategoryClick(id)}
-                  className="flex items-center hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-                  title={`${label}`}
-                >
-                  <span className="mr-1">{emoji}</span> {label}
-                </button>
+              ['/', '🏠', 'Home'],
+              ['#chatbots', '🤖', 'Chatbots'],
+              ['#image-generators', '🖼️', 'Images'],
+              ['#music-generators', '🎵', 'Music'],
+              ['#data-analysis', '📊', 'Data'],
+              ['#ai-diagrams', '📈', 'Diagrams'],
+              ['#writing-tools', '✍️', 'Text'],
+              ['#video-generators', '🎬', 'Video'],
+            ].map(([link, icon, label]) => (
+              <li key={link}>
+                {link.startsWith('#') ? (
+                  <button
+                    onClick={() => handleCategoryClick(link.slice(1))}
+                    className="nav-item hover:text-blue-600 dark:hover:text-blue-400"
+                  >
+                    <span className="spin-once">{icon}</span> {label}
+                  </button>
+                ) : (
+                  <Link
+                    to={link}
+                    className="nav-item hover:text-blue-600 dark:hover:text-blue-400"
+                  >
+                    <span className="spin-once">{icon}</span> {label}
+                  </Link>
+                )}
               </li>
             ))}
-            <li><Link to="/about" className="hover:text-blue-600 dark:hover:text-blue-400">ABOUT</Link></li>
-            <li><Link to="/contact" className="hover:text-blue-600 dark:hover:text-blue-400">CONTACT</Link></li>
-            {/* Dropdown */}
+           <li>
+                <Link to="/About" className="nav-item hover:text-blue-600 dark:hover:text-blue-400">
+                    <span className="spin-once">ℹ️</span> About
+                </Link>
+            </li>
+            <li>
+        <Link to="/contact" className="nav-item hover:text-blue-600 dark:hover:text-blue-400">
+          <span className="spin-once">📞</span> Contact
+          </Link>
+          </li>
             <li className="relative" ref={dropdownRef}>
-              <button
-                ref={buttonRef}
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                onMouseEnter={cancelCloseDropdown}
-                onMouseLeave={closeDropdownWithDelay}
-                className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
-              >
-                <i className="fas fa-tools mr-1"></i> ALL TOOLS
-                <i className="fas fa-caret-down text-[10px]"></i>
-              </button>
+            <button
+          ref={buttonRef}
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          onMouseEnter={cancelCloseDropdown}
+          onMouseLeave={closeDropdownWithDelay}
+          className="nav-item flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
+          >
+          <span className="spin-once">🧰</span> All Tools <i className="fas fa-caret-down text-[10px]"></i>
+          </button>
               {isDropdownOpen && (
                 <ul
-                  className="absolute right-0 bg-white dark:bg-gray-800 shadow-lg rounded-md mt-2 py-2 w-48 z-50 text-xs"
+                  className="absolute left-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 min-w-[300px] max-h-[calc(100vh-100px)] overflow-y-auto z-50 text-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 px-2"
                   onMouseEnter={cancelCloseDropdown}
                   onMouseLeave={closeDropdownWithDelay}
                 >
-                  {categories.map((category) => (
-                    <li key={category.id}>
-                      <button
-                        onClick={() => handleCategoryClick(category.id)}
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left text-gray-800 dark:text-white"
-                      >
-                        {category.name}
-                      </button>
-                    </li>
-                  ))}
+                  <li className="col-span-full px-2 pb-2">
+                    <input
+                      type="text"
+                      placeholder="Search tools..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-sm text-gray-800 dark:text-white"
+                    />
+                  </li>
+                  {categories
+                    .filter(cat => cat.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                    .map((cat) => (
+                      <li key={cat.id}>
+                        <button
+                          onClick={() => handleCategoryClick(cat.id)}
+                          className="block w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white rounded"
+                        >
+                          {cat.name}
+                        </button>
+                      </li>
+                    ))}
                 </ul>
               )}
             </li>
           </ul>
 
-          {/* Right Options */}
           <div className="hidden sm:flex items-center space-x-4 text-xs font-normal">
             <button
               onClick={toggleDarkMode}
@@ -178,90 +225,56 @@ const Header = () => {
             >
               <i className={`fas ${isDarkMode ? 'fa-moon' : 'fa-sun'}`}></i>
             </button>
-            {!isLoggedIn ? (
+
+            {isLoggedIn && (
+              <div className="relative" ref={accountRef}>
+                <button
+                  ref={accountButtonRef}
+                  onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
+                  onMouseEnter={cancelCloseAccountDropdown}
+                  onMouseLeave={closeAccountDropdownWithDelay}
+                  className="nav-item flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
+                >
+                  Account <i className="fas fa-caret-down text-[10px]"></i>
+                </button>
+                {isAccountDropdownOpen && (
+                  <ul
+                    className="absolute right-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 z-50 text-sm w-32"
+                    onMouseEnter={cancelCloseAccountDropdown}
+                    onMouseLeave={closeAccountDropdownWithDelay}
+                  >
+                    <li>
+                      <Link to="/history" className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">History</Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        Sign Out
+                      </button>
+                    </li>
+                  </ul>
+                )}
+              </div>
+            )}
+
+            {!isLoggedIn && (
               <>
-                <Link to="/login" className="hover:text-blue-600 dark:hover:text-blue-400">
-                  <i className="fas fa-sign-in-alt mr-1"></i> Login
-                </Link>
-                <Link to="/signup" className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md flex items-center">
-                  <i className="fas fa-user-plus mr-1"></i> Sign up
-                </Link>
+                <Link to="/login" className="hover:text-blue-600 dark:hover:text-blue-400">Login</Link>
+                <Link to="/signup" className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md flex items-center">Sign up</Link>
               </>
-            ) : (
-              <button onClick={handleLogout} className="hover:text-blue-600 dark:hover:text-blue-400">
-                <i className="fas fa-sign-out-alt mr-1"></i> Logout
-              </button>
             )}
           </div>
 
-          {/* Mobile menu toggle */}
           <div className="sm:hidden">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="hover:text-blue-600 dark:hover:text-blue-400"
-            >
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="hover:text-blue-600 dark:hover:text-blue-400">
               <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
             </button>
           </div>
         </nav>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="sm:hidden px-4 py-4 text-sm bg-white dark:bg-gray-800 space-y-3 animate-slide-in">
-            {categories.slice(0, 7).map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => handleCategoryClick(cat.id)}
-                className="block hover:text-blue-600 dark:hover:text-blue-400"
-              >
-                {cat.name}
-              </button>
-            ))}
-            <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-blue-600 dark:hover:text-blue-400">
-              About
-            </Link>
-            <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-blue-600 dark:hover:text-blue-400">
-              Contact
-            </Link>
-            <details className="group">
-              <summary className="cursor-pointer flex items-center gap-1 select-none">
-                <i className="fas fa-tools mr-1"></i> All Tools
-              </summary>
-              <ul className="ml-4 mt-2 space-y-1">
-                {categories.map((cat) => (
-                  <li key={cat.id}>
-                    <button
-                      onClick={() => handleCategoryClick(cat.id)}
-                      className="block hover:text-blue-600 dark:hover:text-blue-400 w-full text-left"
-                    >
-                      {cat.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </details>
-
-            <div className="pt-2 border-t border-gray-300 dark:border-gray-600 flex items-center justify-between">
-              <button
-                onClick={toggleDarkMode}
-                className="text-yellow-400 dark:text-gray-200 hover:scale-110 transition-transform duration-200"
-              >
-                <i className={`fas ${isDarkMode ? 'fa-moon' : 'fa-sun'}`}></i> Mode
-              </button>
-              {!isLoggedIn ? (
-                <div className="flex gap-4">
-                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-blue-600 dark:hover:text-blue-400">Login</Link>
-                  <Link to="/signup" onClick={() => setIsMobileMenuOpen(false)} className="text-red-600 hover:text-red-700">Sign up</Link>
-                </div>
-              ) : (
-                <button onClick={handleLogout} className="hover:text-blue-600 dark:hover:text-blue-400">Logout</button>
-              )}
-            </div>
-          </div>
-        )}
       </header>
 
-      {/* Back to Top */}
       {showBackToTop && (
         <button
           onClick={handleBackToTop}
@@ -271,7 +284,7 @@ const Header = () => {
           <i className="fas fa-rocket text-lg"></i>
         </button>
       )}
-    </div>
+    </PageWrapper>
   );
 };
 

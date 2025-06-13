@@ -1,55 +1,64 @@
-/* header.css */
+/* ===============================
+   🔥 Animations
+   =============================== */
 
-/* Fade-in animation for dropdown */
-.animate-fade-in {
-  animation: fadeIn 0.2s ease forwards;
-}
-
+/* Fade-in for dropdown */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in forwards;
 }
 
-/* Smooth slide-down for mobile menu */
+/* Slide-down for mobile menu */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); max-height: 0; }
+  to { opacity: 1; transform: translateY(0); max-height: 1000px; }
+}
 .mobile-menu-slide {
   animation: slideDown 0.3s ease forwards;
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-    max-height: 0;
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    max-height: 1000px;
-  }
+/* Slide-in (generic) */
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-slide-in {
+  animation: slideIn 0.3s ease-in;
 }
 
-/* Hamburger icon transition */
+/* Bounce for Back to Top */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.animate-bounce {
+  animation: bounce 1.5s infinite;
+}
+
+/* ===============================
+   🍔 Hamburger icon transition
+   =============================== */
 .hamburger-icon {
   transition: transform 0.3s ease;
 }
-
 .hamburger-icon.open {
   transform: rotate(90deg);
 }
 
-/* Dropdown list shadow & rounded corners */
+/* ===============================
+   📜 Dropdown styling
+   =============================== */
+
+/* Dropdown container shadow & rounded */
 .dropdown-menu {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 0.375rem;
 }
 
-/* Scrollbar styling for dropdown if overflow */
+/* Scrollable dropdown content */
 .dropdown-scroll {
   max-height: 300px;
   overflow-y: auto;
@@ -70,49 +79,64 @@
   background: transparent;
 }
 
-/* Existing styles */
-.dropdown-menu {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* ===============================
+   🔁 Hover spin utility
+   =============================== */
+.spin-once {
+  display: inline-block;
+  transition: transform 0.5s ease;
 }
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-in;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-slide-in {
-  animation: slideIn 0.3s ease-in;
-}
-@keyframes slideIn {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-.hamburger-icon.open {
-  transform: rotate(90deg);
-}
-.dropdown-scroll {
-  max-height: 300px;
-  overflow-y: auto;
+.spin-once:hover {
+  transform: rotate(360deg);
 }
 
-/* New styles for Back to Top button */
-.animate-bounce {
-  animation: bounce 1.5s infinite;
-}
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
-/* Ensure button is responsive */
+/* ===============================
+   📱 Responsive Back to Top button
+   =============================== */
 @media (max-width: 640px) {
   .fixed.bottom-6.right-6 {
     bottom: 1rem;
     right: 1rem;
   }
+}
+
+/* ===============================
+   🎨 Tailwind-powered classes
+   =============================== */
+
+/* Shared nav item styles */
+.nav-item {
+  @apply transition-colors duration-200 text-sm font-semibold;
+}
+
+.nav-item:hover {
+  @apply cursor-pointer;
+}
+
+/* Highlight "All Tools" on hover */
+.all-tools-button {
+  @apply flex items-center gap-1;
+}
+.all-tools-button:hover {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+/* Mobile nav base style (when used) */
+.mobile-nav {
+  @apply absolute top-16 left-0 w-full bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700;
+}
+
+/* Dropdown search input */
+.dropdown-search-input {
+  @apply w-full px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-sm text-gray-800 dark:text-white;
+}
+
+/* Account dropdown menu */
+.account-dropdown {
+  @apply absolute right-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 z-50 text-sm w-32;
+}
+
+/* Sign up button consistent size */
+.signup-button {
+  @apply bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md flex items-center transition-colors duration-200;
 }

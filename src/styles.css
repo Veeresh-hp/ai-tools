@@ -1,6 +1,5 @@
 /* src/styles.css */
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;
 
 /* Custom animations */

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PageWrapper from './PageWrapper';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -15,6 +16,7 @@ const Contact = () => {
   };
 
   return (
+    <PageWrapper>
     <section className="px-4 sm:px-6 md:px-10 lg:px-16 py-10 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">
         Contact Us 📬
@@ -91,6 +93,7 @@ const Contact = () => {
         </div>
       </div>
     </section>
+    </PageWrapper>
   );
 };
 

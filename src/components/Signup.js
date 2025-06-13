@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import PageWrapper from './PageWrapper';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -11,9 +12,11 @@ const Signup = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const history = useHistory();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const history = useHistory();
+  const API_URL = process.env.REACT_APP_API_URL || 'https://ai-tools-hub-backend-u2v6.onrender.com';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,14 +48,14 @@ const Signup = () => {
     try {
       const response = await axios.post(`${API_URL}/api/auth/signup`, formData);
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('username', response.data.username); // Do this in both login and signup responses
+      localStorage.setItem('username', response.data.username);
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userEmail', formData.email);
       history.push('/');
       window.location.reload();
     } catch (error) {
       setErrors({
-        general: error.response?.data?.error || 'Signup failed. Try again.',
+        general: error.response?.data?.error || 'Signup failed. Please try again.',
       });
     } finally {
       setIsLoading(false);
@@ -60,39 +63,139 @@ const Signup = () => {
   };
 
   return (
-    <section className="px-4 py-10 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold text-center mb-6">Sign Up</h1>
-      <div className="bg-white p-6 rounded shadow">
-        {errors.general && <p className="text-red-600 text-sm mb-4 text-center">{errors.general}</p>}
-        <div className="space-y-4">
-          <InputField label="Email" name="email" type="email" value={formData.email} onChange={handleChange} error={errors.email} />
-          <InputField label="Username" name="username" type="text" value={formData.username} onChange={handleChange} error={errors.username} />
-          <InputField label="Password" name="password" type="password" value={formData.password} onChange={handleChange} error={errors.password} />
-          <InputField label="Confirm Password" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} error={errors.confirmPassword} />
-          <button onClick={handleSignup} disabled={isLoading} className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:bg-blue-400">
-            {isLoading ? 'Signing up...' : 'Sign Up'}
-          </button>
+    <PageWrapper>
+      <div className="min-h-screen bg-gradient-to-br from-[#f7f6fb] to-[#f0eff7] flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center space-x-2 mb-4">
+              <span className="font-black text-2xl text-gray-900">AI</span>
+              <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center">
+                <i className="fas fa-brain text-white text-sm"></i>
+              </div>
+              <span className="font-black text-2xl text-gray-900">TOOLS</span>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900">Create your account</h2>
+            <p className="text-gray-600 text-sm mt-2">Sign up to access amazing AI tools 🚀</p>
+          </div>
+
+          {errors.general && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm mb-4">
+              {errors.general}
+            </div>
+          )}
+
+          <form onSubmit={handleSignup} className="space-y-6">
+            <InputField
+              label="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              error={errors.email}
+            />
+            <InputField
+              label="Username"
+              name="username"
+              type="text"
+              value={formData.username}
+              onChange={handleChange}
+              error={errors.username}
+            />
+            <PasswordField
+              label="Password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              error={errors.password}
+              show={showPassword}
+              toggle={() => setShowPassword(!showPassword)}
+            />
+            <PasswordField
+              label="Confirm Password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              error={errors.confirmPassword}
+              show={showConfirmPassword}
+              toggle={() => setShowConfirmPassword(!showConfirmPassword)}
+            />
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <i className="fas fa-spinner fa-spin mr-2"></i>
+                  Signing up...
+                </div>
+              ) : (
+                'Sign Up'
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              Already have an account?{' '}
+              <Link to="/login" className="text-blue-600 hover:underline font-semibold">
+                Login here
+              </Link>
+            </p>
+          </div>
         </div>
-        <p className="text-xs text-center mt-4">
-          Already have an account?{' '}
-          <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
-        </p>
       </div>
-    </section>
+    </PageWrapper>
   );
 };
 
+// Reusable input field
 const InputField = ({ label, name, type, value, onChange, error }) => (
   <div>
-    <label className="block text-sm font-medium">{label}</label>
+    <label htmlFor={name} className="block text-sm font-semibold text-gray-700 mb-2">
+      {label}
+    </label>
     <input
+      id={name}
       name={name}
       type={type}
       value={value}
       onChange={onChange}
-      className={`w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-300 bg-red-50' : 'border-gray-300'}`}
+      className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+        error ? 'border-red-300 bg-red-50' : 'border-gray-300'
+      }`}
       placeholder={`Enter your ${label.toLowerCase()}`}
     />
+    {error && <p className="text-red-600 text-xs mt-1">{error}</p>}
+  </div>
+);
+
+// Reusable password input field with show/hide
+const PasswordField = ({ label, name, value, onChange, error, show, toggle }) => (
+  <div>
+    <label htmlFor={name} className="block text-sm font-semibold text-gray-700 mb-2">
+      {label}
+    </label>
+    <div className="relative">
+      <input
+        id={name}
+        name={name}
+        type={show ? 'text' : 'password'}
+        value={value}
+        onChange={onChange}
+        className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+          error ? 'border-red-300 bg-red-50' : 'border-gray-300'
+        }`}
+        placeholder={`Enter your ${label.toLowerCase()}`}
+      />
+      <button
+        type="button"
+        onClick={toggle}
+        className="absolute inset-y-0 right-0 px-3 flex items-center text-sm text-gray-600 hover:text-gray-900 focus:outline-none"
+      >
+        {show ? 'Hide' : 'Show'}
+      </button>
+    </div>
     {error && <p className="text-red-600 text-xs mt-1">{error}</p>}
   </div>
 );

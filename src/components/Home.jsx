@@ -1,7 +1,9 @@
 import React from 'react';
+import PageWrapper from './PageWrapper';
 
 const Home = () => {
   return (
+    <PageWrapper>
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <h1 className="text-4xl font-bold mb-4">Welcome to AI Tools Hub</h1>
@@ -10,6 +12,7 @@ const Home = () => {
         </p>
       </div>
     </div>
+    </PageWrapper>
   );
 };
 
