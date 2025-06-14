@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -43,6 +44,7 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+
     setIsLoading(true);
     try {
       const response = await axios.post(`${API_URL}/api/auth/signup`, formData);
@@ -63,7 +65,12 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen px-4 py-6 bg-gradient-to-br from-[#f7f6fb] to-[#f0eff7] flex items-center justify-center">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 sm:p-8"
+      >
         <div className="text-center mb-6">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <span className="font-black text-xl sm:text-2xl text-gray-900">AI</span>
@@ -77,54 +84,61 @@ const Signup = () => {
         </div>
 
         {errors.general && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-md text-sm mb-4">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-md text-sm mb-4"
+          >
             {errors.general}
-          </div>
+          </motion.div>
         )}
 
         <form onSubmit={handleSignup} className="space-y-4">
-          <div>
+          {/* Email */}
+          <div className={errors.email ? 'animate-shake' : ''}>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white ${
-              errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
-            }`}
-            placeholder="Enter your email"
-          />
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white transition-all duration-150 ${
+                errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
+              }`}
+              placeholder="Enter your email"
+            />
             {errors.email && <p className="text-red-600 text-xs mt-1">{errors.email}</p>}
           </div>
 
-          <div>
+          {/* Username */}
+          <div className={errors.username ? 'animate-shake' : ''}>
             <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
             <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white ${
-              errors.username ? 'border-red-300 bg-red-50' : 'border-gray-300'
-            }`}
-            placeholder="Choose a username"
-          />
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white transition-all duration-150 ${
+                errors.username ? 'border-red-300 bg-red-50' : 'border-gray-300'
+              }`}
+              placeholder="Choose a username"
+            />
             {errors.username && <p className="text-red-600 text-xs mt-1">{errors.username}</p>}
           </div>
 
-          <div className="relative">
+          {/* Password */}
+          <div className={`relative ${errors.password ? 'animate-shake' : ''}`}>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
               type={showPassword ? 'text' : 'password'}
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white ${
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white transition-all duration-150 ${
                 errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300'
               }`}
               placeholder="Enter password"
-/>
+            />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -135,19 +149,19 @@ const Signup = () => {
             {errors.password && <p className="text-red-600 text-xs mt-1">{errors.password}</p>}
           </div>
 
-          <div className="relative">
+          {/* Confirm Password */}
+          <div className={`relative ${errors.confirmPassword ? 'animate-shake' : ''}`}>
             <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
             <input
-            type={showConfirmPassword ? 'text' : 'password'}
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white ${
-              errors.confirmPassword ? 'border-red-300 bg-red-50' : 'border-gray-300'
-            }`}
-            placeholder="Re-enter password"
-          />
-
+              type={showConfirmPassword ? 'text' : 'password'}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white transition-all duration-150 ${
+                errors.confirmPassword ? 'border-red-300 bg-red-50' : 'border-gray-300'
+              }`}
+              placeholder="Re-enter password"
+            />
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -160,6 +174,7 @@ const Signup = () => {
             )}
           </div>
 
+          {/* Submit */}
           <button
             type="submit"
             disabled={isLoading}
@@ -181,7 +196,7 @@ const Signup = () => {
             Login here
           </Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 };

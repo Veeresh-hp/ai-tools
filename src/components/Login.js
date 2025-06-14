@@ -42,6 +42,7 @@ const Login = () => {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userEmail', response.data.email);
+      localStorage.setItem('username', response.data.username);
       history.push('/');
       window.location.reload();
     } catch (error) {

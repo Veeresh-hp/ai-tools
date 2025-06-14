@@ -134,13 +134,24 @@ const Header = () => {
 
   return (
     <PageWrapper>
+      <style>
+        {`
+          .spin-on-hover {
+            display: inline-block;
+            transition: transform 0.4s ease;
+          }
+          .spin-on-hover:hover {
+            transform: rotate(360deg);
+          }
+        `}
+      </style>
       <header className="fixed top-0 left-0 w-full backdrop-blur-md border-b border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-800/90 z-50">
         <nav className="flex items-center justify-between px-4 sm:px-6 md:px-10 lg:px-5 h-16">
           <Link to="/" className="flex items-center text-xl font-extrabold text-red-600 dark:text-red-400 hover:scale-105 transition-all duration-200" onClick={() => {
             window.scrollTo({ top: 0 });
             addToHistory('Home', '/');
           }}>
-            <i className="fas fa-bolt mr-2"></i> AI Tools Hub
+            <i className="fas fa-bolt mr-2 spin-on-hover"></i> AI Tools Hub
           </Link>
 
           {/* Mobile Hamburger */}
@@ -152,7 +163,7 @@ const Header = () => {
               }} 
               className="hover:text-blue-600 dark:hover:text-blue-400"
             >
-              <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+              <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl spin-on-hover`}></i>
             </button>
           </div>
 
@@ -162,17 +173,17 @@ const Header = () => {
               <li key={link}>
                 {link.startsWith('#') ? (
                   <button onClick={() => handleCategoryClick(link.slice(1))} className="nav-item hover:text-blue-600 dark:hover:text-blue-400">
-                    {icon} {label}
+                    <span className="spin-on-hover inline-block">{icon}</span> {label}
                   </button>
                 ) : (
                   <Link to={link} onClick={() => addToHistory(label, link)} className="nav-item hover:text-blue-600 dark:hover:text-blue-400">
-                    {icon} {label}
+                    <span className="spin-on-hover inline-block">{icon}</span> {label}
                   </Link>
                 )}
               </li>
             ))}
-            <li><Link to="/about" onClick={() => addToHistory('About', '/about')} className="nav-item hover:text-blue-600 dark:hover:text-blue-400">ℹ️ About</Link></li>
-            <li><Link to="/contact" onClick={() => addToHistory('Contact', '/contact')} className="nav-item hover:text-blue-600 dark:hover:text-blue-400">📞 Contact</Link></li>
+            <li><Link to="/about" onClick={() => addToHistory('About', '/about')} className="nav-item hover:text-blue-600 dark:hover:text-blue-400"><span className="spin-on-hover inline-block">ℹ️</span> About</Link></li>
+            <li><Link to="/contact" onClick={() => addToHistory('Contact', '/contact')} className="nav-item hover:text-blue-600 dark:hover:text-blue-400"><span className="spin-on-hover inline-block">📞</span> Contact</Link></li>
             <li className="relative" ref={dropdownRef}>
               <button
                 ref={buttonRef}
@@ -181,7 +192,7 @@ const Header = () => {
                 onMouseLeave={closeDropdownWithDelay}
                 className="nav-item flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
               >
-                🧰 All Tools <i className="fas fa-caret-down text-[10px]"></i>
+                <span className="spin-on-hover inline-block">🧰</span> All Tools <i className="fas fa-caret-down text-[10px] spin-on-hover"></i>
               </button>
               {isDropdownOpen && (
                 <ul
@@ -216,7 +227,7 @@ const Header = () => {
           {/* Right Side Icons */}
           <div className="hidden sm:flex items-center space-x-4 text-xs font-semibold">
             <button onClick={toggleDarkMode} className="text-yellow-400 dark:text-gray-200 hover:scale-110 transition-transform duration-200" title="Toggle Dark Mode">
-              <i className={`fas ${isDarkMode ? 'fa-moon' : 'fa-sun'}`}></i>
+              <i className={`fas ${isDarkMode ? 'fa-moon' : 'fa-sun'} spin-on-hover`}></i>
             </button>
             {isLoggedIn ? (
               <div className="relative" ref={accountRef}>
@@ -227,7 +238,7 @@ const Header = () => {
                   onMouseLeave={closeAccountDropdownWithDelay}
                   className="nav-item flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
                 >
-                  Account <i className="fas fa-caret-down text-[10px]" />
+                  Account <i className="fas fa-caret-down text-[10px] spin-on-hover" />
                 </button>
                 {isAccountDropdownOpen && (
                   <ul
@@ -235,15 +246,15 @@ const Header = () => {
                     onMouseEnter={cancelCloseAccountDropdown}
                     onMouseLeave={closeAccountDropdownWithDelay}
                   >
-                    <li><Link to="/history" className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">📜 History</Link></li>
-                    <li><button onClick={handleLogout} className="block w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Sign Out</button></li>
+                    <li><Link to="/history" className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"><span className="spin-on-hover inline-block">📜</span> History</Link></li>
+                    <li><button onClick={handleLogout} className="block w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"><span className="spin-on-hover inline-block">🚪</span> Sign Out</button></li>
                   </ul>
                 )}
               </div>
             ) : (
               <>
-                <Link to="/login" className="hover:text-blue-600 dark:hover:text-blue-400">Login</Link>
-                <Link to="/signup" className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md flex items-center">Sign up</Link>
+                <Link to="/login" className="hover:text-blue-600 dark:hover:text-blue-400"><span className="spin-on-hover inline-block">🔐</span> Login</Link>
+                <Link to="/signup" className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md flex items-center"><span className="spin-on-hover inline-block">📝</span> Sign up</Link>
               </>
             )}
           </div>
@@ -266,7 +277,7 @@ const Header = () => {
                       onClick={() => handleCategoryClick(link.slice(1))}
                       className="w-full text-left flex items-center gap-2 text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
                     >
-                      <span>{icon}</span>
+                      <span className="spin-on-hover inline-block">{icon}</span>
                       <span>{label}</span>
                     </button>
                   ) : (
@@ -278,7 +289,7 @@ const Header = () => {
                       }}
                       className="flex items-center gap-2 text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
                     >
-                      <span>{icon}</span>
+                      <span className="spin-on-hover inline-block">{icon}</span>
                       <span>{label}</span>
                     </Link>
                   )}
@@ -287,12 +298,12 @@ const Header = () => {
 
               <li>
                 <Link to="/about" onClick={() => { addToHistory('About', '/about'); setIsMobileMenuOpen(false); }} className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400">
-                  ℹ️ About
+                  <span className="spin-on-hover inline-block">ℹ️</span> About
                 </Link>
               </li>
               <li>
                 <Link to="/contact" onClick={() => { addToHistory('Contact', '/contact'); setIsMobileMenuOpen(false); }} className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400">
-                  📞 Contact
+                  <span className="spin-on-hover inline-block">📞</span> Contact
                 </Link>
               </li>
 
@@ -300,12 +311,12 @@ const Header = () => {
                 <>
                   <li>
                     <Link to="/history" onClick={() => { addToHistory('History', '/history'); setIsMobileMenuOpen(false); }} className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400">
-                      📜 History
+                      <span className="spin-on-hover inline-block">📜</span> History
                     </Link>
                   </li>
                   <li>
                     <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="flex items-center gap-2 w-full text-left hover:text-blue-600 dark:hover:text-blue-400">
-                      🚪 Sign Out
+                      <span className="spin-on-hover inline-block">🚪</span> Sign Out
                     </button>
                   </li>
                 </>
@@ -313,12 +324,12 @@ const Header = () => {
                 <>
                   <li>
                     <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400">
-                      🔐 Login
+                      <span className="spin-on-hover inline-block">🔐</span> Login
                     </Link>
                   </li>
                   <li>
                     <Link to="/signup" onClick={() => setIsMobileMenuOpen(false)} className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md flex items-center justify-center">
-                      📝 Sign up
+                      <span className="spin-on-hover inline-block">📝</span> Sign up
                     </Link>
                   </li>
                 </>
@@ -335,7 +346,7 @@ const Header = () => {
           className="fixed bottom-6 right-6 bg-red-600 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition-all duration-200 hover:scale-110 animate-bounce z-50"
           title="Back to Top 🚀"
         >
-          <i className="fas fa-rocket text-lg"></i>
+          <i className="fas fa-rocket text-lg spin-on-hover"></i>
         </button>
       )}
     </PageWrapper>

@@ -2,8 +2,9 @@ import React from 'react';
 
 const Hero = () => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const username = localStorage.getItem('username');
-  const email = localStorage.getItem('userEmail');
+
+  const rawUsername = localStorage.getItem('username');
+  const username = rawUsername && rawUsername.trim() !== '' ? rawUsername : null;
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -17,7 +18,7 @@ const Hero = () => {
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
 
-  const displayName = username || (email ? email.split('@')[0] : 'Guest');
+  const displayName = formatName(username);
   const getInitial = (name) => (name ? name.charAt(0).toUpperCase() : 'G');
 
   return (
@@ -29,7 +30,7 @@ const Hero = () => {
       {isLoggedIn && (
         <div className="flex justify-center items-center gap-4 mb-4">
           <div className="w-10 h-10 flex items-center justify-center bg-red-600 text-white font-bold rounded-full text-lg shadow">
-            {getInitial(displayName)}
+            {getInitial(username)}
           </div>
           <p className="text-xl text-gray-700 dark:text-gray-300">
             {getGreeting()},{' '}

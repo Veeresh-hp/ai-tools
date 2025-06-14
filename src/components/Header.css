@@ -151,3 +151,11 @@
 .signup-button {
   @apply bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md flex items-center transition-colors duration-200;
 }
+
+.spin-on-hover {
+  display: inline-block;
+  transition: transform 0.4s ease;
+}
+.spin-on-hover:hover {
+  transform: rotate(360deg);
+}

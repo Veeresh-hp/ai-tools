@@ -26,7 +26,7 @@ const Contact = () => {
         </p>
         <p className="text-gray-700 dark:text-gray-300 mb-4">
           Drop us a line at{' '}
-          <a href="mailto:support@aitoolshub.com" className="text-blue-600 dark:text-blue-400 hover:underline">
+          <a href="mailto:veereshhp04@gmail.com" className="text-blue-600 dark:text-blue-400 hover:underline">
             support@aitoolshub.com
           </a>{' '}
           and we’ll get back to you faster than an AI can generate a meme! 🚀
@@ -34,9 +34,11 @@ const Contact = () => {
         <form className="space-y-4 mt-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+            
             <input
               className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               required
+              placeholder="Your Name" 
             />
           </div>
 
