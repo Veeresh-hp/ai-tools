@@ -17,6 +17,25 @@ const ToolCard = ({ tool, openModal }) => {
     openModal(tool);
   };
 
+  const handleGetToolClick = (e) => {
+    e.stopPropagation();
+    if (!tool.url) {
+      e.preventDefault();
+      return;
+    }
+
+    const historyItem = {
+      name: tool.name,
+      url: tool.url,
+      icon: tool.icon,
+      timestamp: new Date().toISOString(),
+    };
+
+    const existingHistory = JSON.parse(localStorage.getItem("toolClickHistory") || "[]");
+    const updatedHistory = [historyItem, ...existingHistory.slice(0, 9)];
+    localStorage.setItem("toolClickHistory", JSON.stringify(updatedHistory));
+  };
+
   return (
     <LazyMotion features={domAnimation}>
       <m.article
@@ -48,7 +67,7 @@ const ToolCard = ({ tool, openModal }) => {
           </span>
         )}
 
-        {/* Ripple effect (span container) */}
+        {/* Ripple effect styling */}
         <style>{`
           .ripple {
             position: absolute;
@@ -93,13 +112,15 @@ const ToolCard = ({ tool, openModal }) => {
 
         {/* Get Tool Link/Button */}
         {!tool.comingSoon ? (
-        <a href={tool.url || '#'}target="_blank"rel="noopener noreferrer"
-          className={`text-xs ${tool.url ? 'text-blue-600 hover:underline' : 'text-gray-400 cursor-not-allowed'} mt-auto`}
-          onClick={(e) => { e.stopPropagation();
-            if (!tool.url) e.preventDefault();
-  }}>
-    Get Tool
-  </a>
+          <a
+            href={tool.url || '#'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`text-xs ${tool.url ? 'text-blue-600 hover:underline' : 'text-gray-400 cursor-not-allowed'} mt-auto`}
+            onClick={handleGetToolClick}
+          >
+            Get Tool
+          </a>
         ) : (
           <button
             disabled

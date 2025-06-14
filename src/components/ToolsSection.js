@@ -1,4 +1,3 @@
-// ToolsSection.js
 import React, { useState } from 'react';
 import { motion, LayoutGroup } from 'framer-motion';
 import toolsData from '../data/toolsData';
@@ -102,10 +101,13 @@ const ToolsSection = ({ openModal }) => {
             className="category-section mb-8"
             data-category={category.id}
           >
-            <h2 className={`text-xl font-bold mb-4 flex items-center gap-2 text-${getCategoryColor(category.id)}`}>
-              <i className={`fas ${getCategoryIcon(category.id)} text-${getCategoryColor(category.id)}`}></i>
-              {category.name}
-            </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <i className={`fas ${getCategoryIcon(category.id)} text-lg ${getColorClass(category.id)}`} />
+              <h2 className={`text-xl font-bold ${getColorClass(category.id)}`}>
+                {category.name}
+              </h2>
+            </div>
+
             <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {category.tools.map(tool => (
                 <motion.div
@@ -127,6 +129,7 @@ const ToolsSection = ({ openModal }) => {
   );
 };
 
+// Icon for each category
 const getCategoryIcon = (categoryId) => {
   const iconMap = {
     chatbots: 'fa-robot',
@@ -148,25 +151,26 @@ const getCategoryIcon = (categoryId) => {
   return iconMap[categoryId] || 'fa-box';
 };
 
-const getCategoryColor = (categoryId) => {
+// Tailwind safe color class
+const getColorClass = (categoryId) => {
   const colorMap = {
-    chatbots: 'purple-600',
-    'image-generators': 'pink-600',
-    'music-generators': 'green-600',
-    'data-analysis': 'teal-600',
-    'ai-diagrams': 'indigo-600',
-    'writing-tools': 'blue-600',
-    'video-generators': 'red-600',
-    'utility-tools': 'gray-700',
-    'marketing-tools': 'orange-500',
-    'voice-tools': 'yellow-500',
-    'presentation-tools': 'cyan-600',
-    'website-builders': 'emerald-600',
-    'gaming-tools': 'fuchsia-600',
-    'short-clippers': 'rose-500',
-    'faceless-video': 'zinc-600',
+    chatbots: 'text-purple-600',
+    'image-generators': 'text-pink-600',
+    'music-generators': 'text-green-600',
+    'data-analysis': 'text-teal-600',
+    'ai-diagrams': 'text-indigo-600',
+    'writing-tools': 'text-blue-600',
+    'video-generators': 'text-red-600',
+    'utility-tools': 'text-gray-700',
+    'marketing-tools': 'text-orange-500',
+    'voice-tools': 'text-yellow-500',
+    'presentation-tools': 'text-cyan-600',
+    'website-builders': 'text-emerald-600',
+    'gaming-tools': 'text-fuchsia-600',
+    'short-clippers': 'text-rose-500',
+    'faceless-video': 'text-zinc-600',
   };
-  return colorMap[categoryId] || 'gray-500';
+  return colorMap[categoryId] || 'text-gray-500';
 };
 
 export default ToolsSection;

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import PageWrapper from './PageWrapper';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -63,141 +62,128 @@ const Signup = () => {
   };
 
   return (
-    <PageWrapper>
-      <div className="min-h-screen bg-gradient-to-br from-[#f7f6fb] to-[#f0eff7] flex items-center justify-center px-4">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <span className="font-black text-2xl text-gray-900">AI</span>
-              <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center">
-                <i className="fas fa-brain text-white text-sm"></i>
-              </div>
-              <span className="font-black text-2xl text-gray-900">TOOLS</span>
+    <div className="min-h-screen px-4 py-6 bg-gradient-to-br from-[#f7f6fb] to-[#f0eff7] flex items-center justify-center">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+        <div className="text-center mb-6">
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <span className="font-black text-xl sm:text-2xl text-gray-900">AI</span>
+            <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center">
+              <i className="fas fa-brain text-white text-sm"></i>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">Create your account</h2>
-            <p className="text-gray-600 text-sm mt-2">Sign up to access amazing AI tools 🚀</p>
+            <span className="font-black text-xl sm:text-2xl text-gray-900">TOOLS</span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Create your account</h2>
+          <p className="text-gray-600 text-sm mt-1">Sign up to explore amazing tools 🚀</p>
+        </div>
+
+        {errors.general && (
+          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-md text-sm mb-4">
+            {errors.general}
+          </div>
+        )}
+
+        <form onSubmit={handleSignup} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white ${
+              errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
+            }`}
+            placeholder="Enter your email"
+          />
+            {errors.email && <p className="text-red-600 text-xs mt-1">{errors.email}</p>}
           </div>
 
-          {errors.general && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm mb-4">
-              {errors.general}
-            </div>
-          )}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+            <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white ${
+              errors.username ? 'border-red-300 bg-red-50' : 'border-gray-300'
+            }`}
+            placeholder="Choose a username"
+          />
+            {errors.username && <p className="text-red-600 text-xs mt-1">{errors.username}</p>}
+          </div>
 
-          <form onSubmit={handleSignup} className="space-y-6">
-            <InputField
-              label="Email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              error={errors.email}
-            />
-            <InputField
-              label="Username"
-              name="username"
-              type="text"
-              value={formData.username}
-              onChange={handleChange}
-              error={errors.username}
-            />
-            <PasswordField
-              label="Password"
+          <div className="relative">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input
+              type={showPassword ? 'text' : 'password'}
               name="password"
               value={formData.password}
               onChange={handleChange}
-              error={errors.password}
-              show={showPassword}
-              toggle={() => setShowPassword(!showPassword)}
-            />
-            <PasswordField
-              label="Confirm Password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              error={errors.confirmPassword}
-              show={showConfirmPassword}
-              toggle={() => setShowConfirmPassword(!showConfirmPassword)}
-            />
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white ${
+                errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300'
+              }`}
+              placeholder="Enter password"
+/>
             <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-[36px] text-gray-600 hover:text-gray-900 text-sm"
             >
-              {isLoading ? (
-                <div className="flex items-center justify-center">
-                  <i className="fas fa-spinner fa-spin mr-2"></i>
-                  Signing up...
-                </div>
-              ) : (
-                'Sign Up'
-              )}
+              <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
             </button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Already have an account?{' '}
-              <Link to="/login" className="text-blue-600 hover:underline font-semibold">
-                Login here
-              </Link>
-            </p>
+            {errors.password && <p className="text-red-600 text-xs mt-1">{errors.password}</p>}
           </div>
-        </div>
+
+          <div className="relative">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <input
+            type={showConfirmPassword ? 'text' : 'password'}
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-sm sm:text-base text-gray-900 bg-white ${
+              errors.confirmPassword ? 'border-red-300 bg-red-50' : 'border-gray-300'
+            }`}
+            placeholder="Re-enter password"
+          />
+
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-[36px] text-gray-600 hover:text-gray-900 text-sm"
+            >
+              <i className={`fas ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+            </button>
+            {errors.confirmPassword && (
+              <p className="text-red-600 text-xs mt-1">{errors.confirmPassword}</p>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 rounded-md text-sm sm:text-base transition-colors focus:ring-2 focus:ring-blue-500"
+          >
+            {isLoading ? (
+              <span className="flex items-center justify-center">
+                <i className="fas fa-spinner fa-spin mr-2"></i> Signing up...
+              </span>
+            ) : (
+              'Sign Up'
+            )}
+          </button>
+        </form>
+
+        <p className="text-center text-sm text-gray-600 mt-4">
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-600 hover:underline font-semibold">
+            Login here
+          </Link>
+        </p>
       </div>
-    </PageWrapper>
+    </div>
   );
 };
-
-// Reusable input field
-const InputField = ({ label, name, type, value, onChange, error }) => (
-  <div>
-    <label htmlFor={name} className="block text-sm font-semibold text-gray-700 mb-2">
-      {label}
-    </label>
-    <input
-      id={name}
-      name={name}
-      type={type}
-      value={value}
-      onChange={onChange}
-      className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-        error ? 'border-red-300 bg-red-50' : 'border-gray-300'
-      }`}
-      placeholder={`Enter your ${label.toLowerCase()}`}
-    />
-    {error && <p className="text-red-600 text-xs mt-1">{error}</p>}
-  </div>
-);
-
-// Reusable password input field with show/hide
-const PasswordField = ({ label, name, value, onChange, error, show, toggle }) => (
-  <div>
-    <label htmlFor={name} className="block text-sm font-semibold text-gray-700 mb-2">
-      {label}
-    </label>
-    <div className="relative">
-      <input
-        id={name}
-        name={name}
-        type={show ? 'text' : 'password'}
-        value={value}
-        onChange={onChange}
-        className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-          error ? 'border-red-300 bg-red-50' : 'border-gray-300'
-        }`}
-        placeholder={`Enter your ${label.toLowerCase()}`}
-      />
-      <button
-        type="button"
-        onClick={toggle}
-        className="absolute inset-y-0 right-0 px-3 flex items-center text-sm text-gray-600 hover:text-gray-900 focus:outline-none"
-      >
-        {show ? 'Hide' : 'Show'}
-      </button>
-    </div>
-    {error && <p className="text-red-600 text-xs mt-1">{error}</p>}
-  </div>
-);
 
 export default Signup;

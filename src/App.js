@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import About from './components/About';
 import Contact from './components/Contact';
+import HistoryPage from './components/HistoryPage'; // ✅ Your new history page
 import ResetPassword from './components/ResetPassword';
 import './App.css';
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="/signup" component={Signup} />
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
+          <Route path="/history" component={HistoryPage} /> {/* ✅ History route */}
           <Route path="/reset-password" component={ResetPassword} />
         </Switch>
         <Footer />

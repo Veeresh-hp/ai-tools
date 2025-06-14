@@ -14,7 +14,7 @@ serve -s build
 
 for frontend
 git add .
- git commit -m "Add username with avatar"
+ git commit -m "Added somuch here like historyand others"
  git push origin master
  vercel --prod
 

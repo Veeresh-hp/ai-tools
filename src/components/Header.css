@@ -20,13 +20,22 @@
   animation: slideDown 0.3s ease forwards;
 }
 
-/* Slide-in (generic) */
-@keyframes slideIn {
+/* Slide-in for full screen (e.g. mobile drawer) */
+@keyframes slideInX {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.animate-slide-in {
+  animation: slideInX 0.4s ease forwards;
+}
+
+/* Slide-in vertically */
+@keyframes slideInY {
   from { transform: translateY(-20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-.animate-slide-in {
-  animation: slideIn 0.3s ease-in;
+.animate-slide-in-y {
+  animation: slideInY 0.3s ease-in;
 }
 
 /* Bounce for Back to Top */
@@ -38,6 +47,7 @@
   animation: bounce 1.5s infinite;
 }
 
+
 /* ===============================
    🍔 Hamburger icon transition
    =============================== */
@@ -48,17 +58,18 @@
   transform: rotate(90deg);
 }
 
+
 /* ===============================
    📜 Dropdown styling
    =============================== */
 
-/* Dropdown container shadow & rounded */
+/* Dropdown container */
 .dropdown-menu {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 0.375rem;
 }
 
-/* Scrollable dropdown content */
+/* Scrollable dropdown */
 .dropdown-scroll {
   max-height: 300px;
   overflow-y: auto;
@@ -69,15 +80,14 @@
 .dropdown-scroll::-webkit-scrollbar {
   width: 6px;
 }
-
 .dropdown-scroll::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 3px;
 }
-
 .dropdown-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
+
 
 /* ===============================
    🔁 Hover spin utility
@@ -90,6 +100,7 @@
   transform: rotate(360deg);
 }
 
+
 /* ===============================
    📱 Responsive Back to Top button
    =============================== */
@@ -100,6 +111,7 @@
   }
 }
 
+
 /* ===============================
    🎨 Tailwind-powered classes
    =============================== */
@@ -108,7 +120,6 @@
 .nav-item {
   @apply transition-colors duration-200 text-sm font-semibold;
 }
-
 .nav-item:hover {
   @apply cursor-pointer;
 }
@@ -121,7 +132,7 @@
   @apply text-blue-600 dark:text-blue-400;
 }
 
-/* Mobile nav base style (when used) */
+/* Mobile nav base style */
 .mobile-nav {
   @apply absolute top-16 left-0 w-full bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700;
 }
@@ -133,10 +144,10 @@
 
 /* Account dropdown menu */
 .account-dropdown {
-  @apply absolute right-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 z-50 text-sm w-32;
+  @apply absolute right-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 z-50 text-sm w-36;
 }
 
-/* Sign up button consistent size */
+/* Sign up button */
 .signup-button {
   @apply bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md flex items-center transition-colors duration-200;
 }

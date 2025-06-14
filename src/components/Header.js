@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { ThemeContext } from '../contexts/ThemeContext';
 import './Header.css';
 import PageWrapper from './PageWrapper';
@@ -12,67 +12,70 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
   const accountRef = useRef(null);
   const accountButtonRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+
   const closeTimeoutRef = useRef(null);
   const accountCloseTimeoutRef = useRef(null);
-  const history = useHistory(); // ✅ useHistory for v5
+  const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 300);
-    };
+    const handleScroll = () => setShowBackToTop(window.scrollY > 300);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const addToHistory = (label, link) => {
+    const historyData = JSON.parse(localStorage.getItem('clickHistory')) || [];
+    const timestamp = new Date().toISOString();
+    const newEntry = { label, link, timestamp };
+    const updated = [newEntry, ...historyData.filter(item => item.link !== link)].slice(0, 10);
+    localStorage.setItem('clickHistory', JSON.stringify(updated));
+  };
+
   const openDropdown = () => {
-    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    clearTimeout(closeTimeoutRef.current);
     setIsDropdownOpen(true);
   };
-
   const closeDropdownWithDelay = () => {
-    closeTimeoutRef.current = setTimeout(() => {
-      setIsDropdownOpen(false);
-    }, 300);
+    closeTimeoutRef.current = setTimeout(() => setIsDropdownOpen(false), 300);
   };
-
-  const cancelCloseDropdown = () => {
-    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
-  };
+  const cancelCloseDropdown = () => clearTimeout(closeTimeoutRef.current);
 
   const openAccountDropdown = () => {
-    if (accountCloseTimeoutRef.current) clearTimeout(accountCloseTimeoutRef.current);
+    clearTimeout(accountCloseTimeoutRef.current);
     setIsAccountDropdownOpen(true);
   };
-
   const closeAccountDropdownWithDelay = () => {
-    accountCloseTimeoutRef.current = setTimeout(() => {
-      setIsAccountDropdownOpen(false);
-    }, 300);
+    accountCloseTimeoutRef.current = setTimeout(() => setIsAccountDropdownOpen(false), 300);
   };
-
-  const cancelCloseAccountDropdown = () => {
-    if (accountCloseTimeoutRef.current) clearTimeout(accountCloseTimeoutRef.current);
-  };
+  const cancelCloseAccountDropdown = () => clearTimeout(accountCloseTimeoutRef.current);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
         dropdownRef.current && buttonRef.current &&
-        !dropdownRef.current.contains(e.target) && !buttonRef.current.contains(e.target)
-      ) {
-        setIsDropdownOpen(false);
-      }
+        !dropdownRef.current.contains(e.target) &&
+        !buttonRef.current.contains(e.target)
+      ) setIsDropdownOpen(false);
+
       if (
         accountRef.current && accountButtonRef.current &&
-        !accountRef.current.contains(e.target) && !accountButtonRef.current.contains(e.target)
-      ) {
-        setIsAccountDropdownOpen(false);
-      }
+        !accountRef.current.contains(e.target) &&
+        !accountButtonRef.current.contains(e.target)
+      ) setIsAccountDropdownOpen(false);
+
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(e.target)
+      ) setIsMobileMenuOpen(false);
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -103,7 +106,8 @@ const Header = () => {
   ];
 
   const handleCategoryClick = (id) => {
-    if (history.location.pathname !== '/') {
+    addToHistory(`Category: ${id}`, `#${id}`);
+    if (location.pathname !== '/') {
       history.push('/');
       setTimeout(() => scrollToSection(id), 100);
     } else {
@@ -114,77 +118,50 @@ const Header = () => {
   };
 
   const scrollToSection = (id) => {
-    const element = document.querySelector(`[data-category="${id}"]`);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    const el = document.querySelector(`[data-category="${id}"]`);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleBackToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const handleBackToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
     <PageWrapper>
-      <header className="fixed top-0 left-0 w-full border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-700 z-50">
+      <header className="fixed top-0 left-0 w-full backdrop-blur-md border-b border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-800/90 z-50">
         <nav className="flex items-center justify-between px-4 sm:px-6 md:px-10 lg:px-5 h-16">
-          <Link
-            to="/"
-            className="flex items-center text-xl font-extrabold text-red-600 dark:text-red-400 hover:scale-105 transition-all duration-200"
-            onClick={() => window.scrollTo({ top: 0 })}
-          >
+          <Link to="/" className="flex items-center text-xl font-extrabold text-red-600 dark:text-red-400 hover:scale-105 transition-all duration-200" onClick={() => {
+            window.scrollTo({ top: 0 });
+            addToHistory('Home', '/');
+          }}>
             <i className="fas fa-bolt mr-2"></i> AI Tools Hub
           </Link>
 
+          {/* Desktop Nav */}
           <ul className="hidden sm:flex items-center space-x-6 text-sm font-semibold">
-            {[
-              ['/', '🏠', 'Home'],
-              ['#chatbots', '🤖', 'Chatbots'],
-              ['#image-generators', '🖼️', 'Images'],
-              ['#music-generators', '🎵', 'Music'],
-              ['#data-analysis', '📊', 'Data'],
-              ['#ai-diagrams', '📈', 'Diagrams'],
-              ['#writing-tools', '✍️', 'Text'],
-              ['#video-generators', '🎬', 'Video'],
-            ].map(([link, icon, label]) => (
+            {[['/', '🏠', 'Home'], ['#chatbots', '🤖', 'Chatbots'], ['#image-generators', '🖼️', 'Images'], ['#music-generators', '🎵', 'Music'], ['#data-analysis', '📊', 'Data'], ['#ai-diagrams', '📈', 'Diagrams'], ['#writing-tools', '✍️', 'Text'], ['#video-generators', '🎬', 'Video']].map(([link, icon, label]) => (
               <li key={link}>
                 {link.startsWith('#') ? (
-                  <button
-                    onClick={() => handleCategoryClick(link.slice(1))}
-                    className="nav-item hover:text-blue-600 dark:hover:text-blue-400"
-                  >
-                    <span className="spin-once">{icon}</span> {label}
+                  <button onClick={() => handleCategoryClick(link.slice(1))} className="nav-item hover:text-blue-600 dark:hover:text-blue-400">
+                    {icon} {label}
                   </button>
                 ) : (
-                  <Link
-                    to={link}
-                    className="nav-item hover:text-blue-600 dark:hover:text-blue-400"
-                  >
-                    <span className="spin-once">{icon}</span> {label}
+                  <Link to={link} onClick={() => addToHistory(label, link)} className="nav-item hover:text-blue-600 dark:hover:text-blue-400">
+                    {icon} {label}
                   </Link>
                 )}
               </li>
             ))}
-           <li>
-                <Link to="/About" className="nav-item hover:text-blue-600 dark:hover:text-blue-400">
-                    <span className="spin-once">ℹ️</span> About
-                </Link>
-            </li>
-            <li>
-        <Link to="/contact" className="nav-item hover:text-blue-600 dark:hover:text-blue-400">
-          <span className="spin-once">📞</span> Contact
-          </Link>
-          </li>
+            <li><Link to="/about" onClick={() => addToHistory('About', '/about')} className="nav-item hover:text-blue-600 dark:hover:text-blue-400">ℹ️ About</Link></li>
+            <li><Link to="/contact" onClick={() => addToHistory('Contact', '/contact')} className="nav-item hover:text-blue-600 dark:hover:text-blue-400">📞 Contact</Link></li>
             <li className="relative" ref={dropdownRef}>
-            <button
-          ref={buttonRef}
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          onMouseEnter={cancelCloseDropdown}
-          onMouseLeave={closeDropdownWithDelay}
-          className="nav-item flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
-          >
-          <span className="spin-once">🧰</span> All Tools <i className="fas fa-caret-down text-[10px]"></i>
-          </button>
+              <button
+                ref={buttonRef}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                onMouseEnter={cancelCloseDropdown}
+                onMouseLeave={closeDropdownWithDelay}
+                className="nav-item flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
+              >
+                🧰 All Tools <i className="fas fa-caret-down text-[10px]"></i>
+              </button>
               {isDropdownOpen && (
                 <ul
                   className="absolute left-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 min-w-[300px] max-h-[calc(100vh-100px)] overflow-y-auto z-50 text-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 px-2"
@@ -200,33 +177,27 @@ const Header = () => {
                       className="w-full px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-sm text-gray-800 dark:text-white"
                     />
                   </li>
-                  {categories
-                    .filter(cat => cat.name.toLowerCase().includes(searchTerm.toLowerCase()))
-                    .map((cat) => (
-                      <li key={cat.id}>
-                        <button
-                          onClick={() => handleCategoryClick(cat.id)}
-                          className="block w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white rounded"
-                        >
-                          {cat.name}
-                        </button>
-                      </li>
-                    ))}
+                  {categories.filter(cat => cat.name.toLowerCase().includes(searchTerm.toLowerCase())).map(cat => (
+                    <li key={cat.id}>
+                      <button
+                        onClick={() => handleCategoryClick(cat.id)}
+                        className="block w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white rounded"
+                      >
+                        {cat.name}
+                      </button>
+                    </li>
+                  ))}
                 </ul>
               )}
             </li>
           </ul>
 
+          {/* Right Side Icons */}
           <div className="hidden sm:flex items-center space-x-4 text-xs font-normal">
-            <button
-              onClick={toggleDarkMode}
-              className="text-yellow-400 dark:text-gray-200 hover:scale-110 transition-transform duration-200"
-              title="Toggle Dark Mode"
-            >
+            <button onClick={toggleDarkMode} className="text-yellow-400 dark:text-gray-200 hover:scale-110 transition-transform duration-200" title="Toggle Dark Mode">
               <i className={`fas ${isDarkMode ? 'fa-moon' : 'fa-sun'}`}></i>
             </button>
-
-            {isLoggedIn && (
+            {isLoggedIn ? (
               <div className="relative" ref={accountRef}>
                 <button
                   ref={accountButtonRef}
@@ -235,7 +206,7 @@ const Header = () => {
                   onMouseLeave={closeAccountDropdownWithDelay}
                   className="nav-item flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
                 >
-                  Account <i className="fas fa-caret-down text-[10px]"></i>
+                  Account <i className="fas fa-caret-down text-[10px]" />
                 </button>
                 {isAccountDropdownOpen && (
                   <ul
@@ -243,23 +214,12 @@ const Header = () => {
                     onMouseEnter={cancelCloseAccountDropdown}
                     onMouseLeave={closeAccountDropdownWithDelay}
                   >
-                    <li>
-                      <Link to="/history" className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">History</Link>
-                    </li>
-                    <li>
-                      <button
-                        onClick={handleLogout}
-                        className="block w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        Sign Out
-                      </button>
-                    </li>
+                    <li><Link to="/history" className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">📜 History</Link></li>
+                    <li><button onClick={handleLogout} className="block w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Sign Out</button></li>
                   </ul>
                 )}
               </div>
-            )}
-
-            {!isLoggedIn && (
+            ) : (
               <>
                 <Link to="/login" className="hover:text-blue-600 dark:hover:text-blue-400">Login</Link>
                 <Link to="/signup" className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md flex items-center">Sign up</Link>
@@ -267,6 +227,7 @@ const Header = () => {
             )}
           </div>
 
+          {/* Mobile Hamburger */}
           <div className="sm:hidden">
             <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="hover:text-blue-600 dark:hover:text-blue-400">
               <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
@@ -275,6 +236,7 @@ const Header = () => {
         </nav>
       </header>
 
+      {/* Back to Top Button */}
       {showBackToTop && (
         <button
           onClick={handleBackToTop}
