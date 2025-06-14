@@ -30,32 +30,6 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const addToHistory = (label, link) => {
-    const historyData = JSON.parse(localStorage.getItem('clickHistory')) || [];
-    const timestamp = new Date().toISOString();
-    const newEntry = { label, link, timestamp };
-    const updated = [newEntry, ...historyData.filter(item => item.link !== link)].slice(0, 10);
-    localStorage.setItem('clickHistory', JSON.stringify(updated));
-  };
-
-  const openDropdown = () => {
-    clearTimeout(closeTimeoutRef.current);
-    setIsDropdownOpen(true);
-  };
-  const closeDropdownWithDelay = () => {
-    closeTimeoutRef.current = setTimeout(() => setIsDropdownOpen(false), 300);
-  };
-  const cancelCloseDropdown = () => clearTimeout(closeTimeoutRef.current);
-
-  const openAccountDropdown = () => {
-    clearTimeout(accountCloseTimeoutRef.current);
-    setIsAccountDropdownOpen(true);
-  };
-  const closeAccountDropdownWithDelay = () => {
-    accountCloseTimeoutRef.current = setTimeout(() => setIsAccountDropdownOpen(false), 300);
-  };
-  const cancelCloseAccountDropdown = () => clearTimeout(accountCloseTimeoutRef.current);
-
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
@@ -76,15 +50,49 @@ const Header = () => {
       ) setIsMobileMenuOpen(false);
     };
 
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setIsMobileMenuOpen(false);
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
+
+  const addToHistory = (label, link) => {
+    const historyData = JSON.parse(localStorage.getItem('clickHistory')) || [];
+    const timestamp = new Date().toISOString();
+    const newEntry = { label, link, timestamp };
+    const updated = [newEntry, ...historyData.filter(item => item.link !== link)].slice(0, 10);
+    localStorage.setItem('clickHistory', JSON.stringify(updated));
+  };
 
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
     window.location.reload();
   };
+
+  const openDropdown = () => {
+    clearTimeout(closeTimeoutRef.current);
+    setIsDropdownOpen(true);
+  };
+  const closeDropdownWithDelay = () => {
+    closeTimeoutRef.current = setTimeout(() => setIsDropdownOpen(false), 300);
+  };
+  const cancelCloseDropdown = () => clearTimeout(closeTimeoutRef.current);
+
+  const openAccountDropdown = () => {
+    clearTimeout(accountCloseTimeoutRef.current);
+    setIsAccountDropdownOpen(true);
+  };
+  const closeAccountDropdownWithDelay = () => {
+    accountCloseTimeoutRef.current = setTimeout(() => setIsAccountDropdownOpen(false), 300);
+  };
+  const cancelCloseAccountDropdown = () => clearTimeout(accountCloseTimeoutRef.current);
 
   const categories = [
     { name: 'Faceless AI Video', id: 'faceless-video' },
@@ -134,6 +142,19 @@ const Header = () => {
           }}>
             <i className="fas fa-bolt mr-2"></i> AI Tools Hub
           </Link>
+
+          {/* Mobile Hamburger */}
+          <div className="sm:hidden">
+            <button 
+              onClick={() => {
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+                setIsDropdownOpen(false); // Close dropdown when toggling mobile menu
+              }} 
+              className="hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+            </button>
+          </div>
 
           {/* Desktop Nav */}
           <ul className="hidden sm:flex items-center space-x-6 text-sm font-semibold">
@@ -193,7 +214,7 @@ const Header = () => {
           </ul>
 
           {/* Right Side Icons */}
-          <div className="hidden sm:flex items-center space-x-4 text-xs font-normal">
+          <div className="hidden sm:flex items-center space-x-4 text-xs font-semibold">
             <button onClick={toggleDarkMode} className="text-yellow-400 dark:text-gray-200 hover:scale-110 transition-transform duration-200" title="Toggle Dark Mode">
               <i className={`fas ${isDarkMode ? 'fa-moon' : 'fa-sun'}`}></i>
             </button>
@@ -226,15 +247,86 @@ const Header = () => {
               </>
             )}
           </div>
-
-          {/* Mobile Hamburger */}
-          <div className="sm:hidden">
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="hover:text-blue-600 dark:hover:text-blue-400">
-              <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
-            </button>
-          </div>
         </nav>
       </header>
+
+      {/* 🔻 Mobile Drawer with Overlay */}
+      {isMobileMenuOpen && (
+        <>
+          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40" onClick={() => setIsMobileMenuOpen(false)} />
+          <div
+            ref={mobileMenuRef}
+            className="fixed top-0 left-0 h-full w-[75%] max-w-xs bg-white dark:bg-gray-900 shadow-lg z-50 transform transition-transform duration-300 ease-in-out translate-x-0"
+          >
+            <ul className="flex flex-col px-4 py-6 space-y-4 text-sm font-medium">
+              {[['/', '🏠', 'Home'], ['#chatbots', '🤖', 'Chatbots'], ['#image-generators', '🖼️', 'Images'], ['#music-generators', '🎵', 'Music'], ['#data-analysis', '📊', 'Data'], ['#ai-diagrams', '📈', 'Diagrams'], ['#writing-tools', '✍️', 'Text'], ['#video-generators', '🎬', 'Video']].map(([link, icon, label]) => (
+                <li key={label}>
+                  {link.startsWith('#') ? (
+                    <button
+                      onClick={() => handleCategoryClick(link.slice(1))}
+                      className="w-full text-left flex items-center gap-2 text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                    >
+                      <span>{icon}</span>
+                      <span>{label}</span>
+                    </button>
+                  ) : (
+                    <Link
+                      to={link}
+                      onClick={() => {
+                        addToHistory(label, link);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="flex items-center gap-2 text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                    >
+                      <span>{icon}</span>
+                      <span>{label}</span>
+                    </Link>
+                  )}
+                </li>
+              ))}
+
+              <li>
+                <Link to="/about" onClick={() => { addToHistory('About', '/about'); setIsMobileMenuOpen(false); }} className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400">
+                  ℹ️ About
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" onClick={() => { addToHistory('Contact', '/contact'); setIsMobileMenuOpen(false); }} className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400">
+                  📞 Contact
+                </Link>
+              </li>
+
+              {isLoggedIn ? (
+                <>
+                  <li>
+                    <Link to="/history" onClick={() => { addToHistory('History', '/history'); setIsMobileMenuOpen(false); }} className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400">
+                      📜 History
+                    </Link>
+                  </li>
+                  <li>
+                    <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="flex items-center gap-2 w-full text-left hover:text-blue-600 dark:hover:text-blue-400">
+                      🚪 Sign Out
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400">
+                      🔐 Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/signup" onClick={() => setIsMobileMenuOpen(false)} className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md flex items-center justify-center">
+                      📝 Sign up
+                    </Link>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
+        </>
+      )}
 
       {/* Back to Top Button */}
       {showBackToTop && (
