@@ -1,0 +1,199 @@
+/* ===============================
+   🔥 Animations
+   =============================== */
+
+/* Fade-in for dropdown */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in forwards;
+}
+
+/* Slide-down for mobile menu */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); max-height: 0; }
+  to { opacity: 1; transform: translateY(0); max-height: 1000px; }
+}
+.mobile-menu-slide {
+  animation: slideDown 0.3s ease forwards;
+}
+
+/* Slide-in for full screen (e.g. mobile drawer) */
+@keyframes slideInX {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.animate-slide-in {
+  animation: slideInX 0.4s ease forwards;
+}
+
+/* Slide-in vertically */
+@keyframes slideInY {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-slide-in-y {
+  animation: slideInY 0.3s ease-in;
+}
+
+/* Bounce for Back to Top */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.animate-bounce {
+  animation: bounce 1.5s infinite;
+}
+
+
+/* ===============================
+   🍔 Hamburger icon transition
+   =============================== */
+.hamburger-icon {
+  transition: transform 0.3s ease;
+}
+.hamburger-icon.open {
+  transform: rotate(90deg);
+}
+
+
+/* ===============================
+   📜 Dropdown styling
+   =============================== */
+
+/* Dropdown container */
+.dropdown-menu {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 0.375rem;
+}
+
+/* Scrollable dropdown */
+.dropdown-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent;
+}
+
+.dropdown-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown-scroll::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+.dropdown-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+/* ===============================
+   🔁 Hover spin utility
+   =============================== */
+.spin-once {
+  display: inline-block;
+  transition: transform 0.5s ease;
+}
+.spin-once:hover {
+  transform: rotate(360deg);
+}
+
+
+/* ===============================
+   📱 Responsive Back to Top button
+   =============================== */
+@media (max-width: 640px) {
+  .fixed.bottom-6.right-6 {
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+
+
+/* ===============================
+   🎨 Tailwind-powered classes
+   =============================== */
+
+/* Shared nav item styles */
+.nav-item {
+  @apply transition-colors duration-200 text-sm font-semibold;
+}
+.nav-item:hover {
+  @apply cursor-pointer;
+}
+
+/* Highlight "All Tools" on hover */
+.all-tools-button {
+  @apply flex items-center gap-1;
+}
+.all-tools-button:hover {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+/* Mobile nav base style */
+.mobile-nav {
+  @apply absolute top-16 left-0 w-full bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700;
+}
+
+/* Dropdown search input */
+.dropdown-search-input {
+  @apply w-full px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-sm text-gray-800 dark:text-white;
+}
+
+/* Account dropdown menu */
+.account-dropdown {
+  @apply absolute right-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 z-50 text-sm w-36;
+}
+
+/* Sign up button */
+.signup-button {
+  @apply bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md flex items-center transition-colors duration-200;
+}
+
+.spin-on-hover {
+  display: inline-block;
+  transition: transform 0.4s ease;
+}
+.spin-on-hover:hover {
+  transform: rotate(360deg);
+}
+
+
+.logo-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 12px;
+  padding: 4px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+}
+
+.logo-img:hover {
+  transform: scale(1.1); /* zoom effect */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 640px) {
+  .logo-img {
+    width: 48px;
+    height: 48px;
+    margin-right: 8px;
+    padding: 2px;
+  }
+}
+.invisible-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+<style>
+    .your-element {
+      width: 80%;
+    }

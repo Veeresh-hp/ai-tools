@@ -1,0 +1,618 @@
+/* index.css */
+@import "tailwindcss/preflight";
+@tailwind utilities;
+
+
+
+@layer utilities {
+  @keyframes smokeRise {
+    0% {
+      opacity: 0.3;
+      transform: translateY(0) scaleY(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: translateY(-0.5rem) scaleY(1.2);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-1.2rem) scaleY(1.4);
+    }
+  }
+
+  .animate-smoke {
+    animation: smokeRise 1.5s ease-out infinite;
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 3s linear infinite;
+  }
+
+  @keyframes spin-reverse {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
+  }
+
+  .animate-spin-slow-reverse {
+    animation: spin-reverse 6s linear infinite;
+  }
+
+  .animate-spin-slower {
+    animation: spin-slow 10s linear infinite;
+  }
+
+  .delay-150 {
+    animation-delay: 150ms;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  /* Subtle bounce animation for active mobile tab */
+  @keyframes tab-bounce {
+    0% { transform: scale(0.96); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+  }
+  .animate-tab-bounce {
+    animation: tab-bounce 0.28s ease-out both;
+  }
+}
+
+.your-element {
+  width: 80%;
+} 
+/*
+  Removed:
+  body {
+    @apply bg-black text-white dark:bg-gray-900 dark:text-white;
+  }
+  We will let the root div in App.js handle the main background and text colors.
+*/
+body {
+  background-color: #000000;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* GLOBAL FIX: Prevent horizontal scroll here instead of component wrappers to preserve sticky behavior */
+}
+
+
+/* Removed:
+b {
+  @apply bg-white text-black dark:bg-gray-900 dark:text-white;
+}
+*/
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ----------------------------------------- */
+/* 🧩 Tool Card Animations */
+.tool-card {
+  opacity: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.tool-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #3b82f6;
+}
+
+.tool-card:nth-child(1) { animation-delay: 0.1s; }
+.tool-card:nth-child(2) { animation-delay: 0.2s; }
+.tool-card:nth-child(3) { animation-delay: 0.3s; }
+.tool-card:nth-child(4) { animation-delay: 0.4s; }
+.tool-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* ----------------------------------------- */
+/* 🔗 Link Hover Effects */
+.get-tool {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.get-tool:hover {
+  color: #1d4ed8;
+}
+
+.get-tool::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: #1d4ed8;
+  transition: width 0.2s ease;
+}
+
+.get-tool:hover::after {
+  width: 100%;
+}
+
+/* ----------------------------------------- */
+/* 📦 Modal Styles */
+.modal {
+  @apply fixed inset-0 bg-black/50 flex justify-center items-center z-[1000];
+}
+
+.modal-content {
+  @apply bg-white p-5 rounded-lg text-center max-w-md w-[90%] dark:bg-gray-800 dark:text-white;
+}
+
+.modal-content h2 {
+  @apply text-xl mb-4;
+}
+
+.modal-content p {
+  @apply text-base text-gray-600 dark:text-gray-300 mb-6;
+}
+
+.modal-content button {
+  @apply bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700;
+}
+
+/* ----------------------------------------- */
+/* 🌀 Reusable Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes slide-down {
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
+
+/* ----------------------------------------- */
+/* 🌟 Utility Enhancements */
+@layer utilities {
+  .animate-fade-in {
+    @apply opacity-0;
+    animation: fadeIn 0.2s ease-out forwards;
+  }
+}
+
+/* ----------------------------------------- */
+/* 🏷️ Miscellaneous */
+.category-section {
+  scroll-margin-top: 80px; /* Adjust for fixed header */
+}
+
+/* Smart Sticky Category Bar Support */
+@media (max-width: 768px) {
+  /* Adjust scroll margins for sections to account for sticky bar at top */
+  [data-category] {
+    scroll-margin-top: 80px; /* Sticky bar height when at top */
+  }
+  
+  /* Smooth scroll snap for category pills */
+  .snap-x {
+    scroll-snap-type: x mandatory;
+  }
+  
+  .snap-start {
+    scroll-snap-align: start;
+  }
+  
+  /* Ensure smooth momentum scrolling on iOS */
+  .scroll-smooth {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+.nav-btn:hover::after {
+  content: '😜';
+  margin-left: 4px;
+  display: inline-block;
+  animation: bounce 0.3s;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.animate-pop {
+  animation: pop 0.3s ease-out forwards;
+}
+
+/* Floating plane animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 1.5s ease-in-out infinite;
+}
+
+/* Skeleton shimmer */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    left: 100%;
+  }
+}
+
+
+@keyframes shimmer {
+  100% {
+    left: 100%;
+  }
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float {
+  animation: float 1.5s ease-in-out infinite;
+}
+
+.animated-border {
+  position: relative;
+  z-index: 0;
+  border-radius: 0.375rem; /* match rounded-md */
+  padding: 2px; /* space for border */
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: conic-gradient(
+    from 0deg,
+    #ff0000,
+    #ff9900,
+    #33cc33,
+    #00ccff,
+    #cc00ff,
+    #ff0000
+  );
+  z-index: -1;
+  border-radius: 0.5rem;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.glowing-border {
+  position: relative;
+  z-index: 0;
+  border-radius: 0.375rem;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.glowing-border::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff9900,
+    #33cc33,
+    #00ccff,
+    #cc00ff,
+    #ff0000
+  );
+  filter: blur(8px);
+  z-index: -1;
+  border-radius: 0.75rem;
+  animation: glowPulse 6s linear infinite;
+}
+
+@keyframes glowPulse {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* ===== Section shimmer sweep when opening hero sections ===== */
+.section-shimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.section-shimmer::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -40%;
+  width: 40%;
+  height: 120%;
+  background: linear-gradient(120deg, rgba(255,255,255,0), rgba(255,255,255,0.15), rgba(255,255,255,0));
+  transform: skewX(-20deg);
+  border-radius: 12px;
+  animation: section-shimmer-sweep 0.5s ease-out forwards;
+}
+
+@keyframes section-shimmer-sweep {
+  to { left: 120%; }
+}
+
+/* Custom Property for rotation */
+@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.rotating-border {
+  position: relative;
+  z-index: 1;
+}
+
+.rotating-border-overlay {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: conic-gradient(from var(--angle), red, orange, yellow, green, blue, indigo, violet, red);
+  z-index: 0;
+  animation: spin 4s linear infinite;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  padding: 2px;
+}
+
+/* Animation for rotating conic border */
+@keyframes spin {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* Hide scrollbars but still allow scrolling */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+/* Thin themed scrollbar for the left sidebar */
+.sidebar-scrollbar {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.12) transparent;
+}
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Thin width */
+}
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  border: 2px solid transparent; /* space around thumb */
+  background-clip: padding-box;
+}
+.sidebar-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.16);
+}
+.sidebar-scrollbar:focus {
+  outline: none;
+}
+
+/* ----------------------------- */
+/* Background / theme variables - REMOVED: Now using inline navy blue theme */
+/* Old background image system removed in favor of consistent navy blue theme across all sections */
+
+/* Hide scrollbar for horizontal filter scroll - Already defined above */
+/* Custom Modal Scrollbar */
+.custom-modal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+.custom-modal-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-modal-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-modal-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 99px;
+}
+.custom-modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.4);
+}
+
+/* Linear fade mask for horizontal scrolling lists - Right side only */
+.mask-linear-fade {
+  mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
+}
+
+
+/* Rainbow Animated Gradient Border Keyframes */
+@keyframes animatedgradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+/* --- Magic Studio Specific Styles --- */
+.mesh-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #08080a;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(253, 60%, 25%, 1) 0, transparent 60%), 
+    radial-gradient(at 50% 0%, hsla(225, 70%, 30%, 1) 0, transparent 60%), 
+    radial-gradient(at 100% 0%, hsla(339, 70%, 30%, 1) 0, transparent 60%), 
+    radial-gradient(at 0% 100%, hsla(339, 70%, 30%, 1) 0, transparent 60%), 
+    radial-gradient(at 100% 100%, hsla(253, 60%, 25%, 1) 0, transparent 60%);
+  filter: blur(80px);
+  z-index: -10;
+  pointer-events: none;
+}
+
+.studio-noise::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.1;
+  filter: contrast(120%) brightness(100%);
+  pointer-events: none;
+  z-index: -5;
+}
+
+.glass-card {
+  background: rgba(18, 18, 24, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+.glass-nav {
+  background: rgba(18, 18, 24, 0.4);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(60px);
+  -webkit-backdrop-filter: blur(60px);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; 
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1); 
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2); 
+}

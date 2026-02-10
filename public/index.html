@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- ================== Google Tag Manager ================== -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src =
+          "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-K3RBJ3L5");
+    </script>
+    <!-- ================== End Google Tag Manager ================== -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>AI Tools Hub</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Favicon -->
+    <!-- <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon.png" /> -->
+     <link rel="icon" href="/favicon.png" />
+     <link rel="apple-touch-icon" href="/favicon.png" />
+
+
+
+    <!-- App Loader Styles -->
+    <style>
+      .app-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+      }
+
+      .app-loader-image {
+        width: 100px;
+        height: auto;
+      }
+      
+      /* Mobile Chatbot Positioning */
+      @media (max-width: 768px) {
+        chat-bot {
+          bottom: 90px !important;
+          z-index: 40 !important; /* Ensure it stays behind nav if overlapping, or adjust as needed */
+        }
+      }
+      /* Mobile Chatbot Positioning */
+      @media (max-width: 768px) {
+        #expertise-bot {
+          position: fixed !important;
+          bottom: 100px !important;
+          right: 20px !important;
+          z-index: 100 !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body style="background-color: #000000;">
+    <!-- ================== Google Tag Manager (noscript) ================== -->
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-K3RBJ3L5"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe>
+    </noscript>
+    <!-- ================== End Google Tag Manager (noscript) ================== -->
+
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <div id="root">
+      <div class="app-loader">
+        <img
+          src="%PUBLIC_URL%/ailogo.gif"
+          alt="Loading App..."
+          class="app-loader-image"
+        />
+      </div>
+    </div>
+    <script src="https://cdn.expertise.ai/chat-bot-loader.js" defer></script>
+    <chat-bot
+        id="expertise-bot"
+        platform_id="79aed4a5-5610-4200-9266-37cd4572de68"
+        user_id="c9e7e10e-3263-4cba-8850-ed8bd9e2b342"
+        chatbot_id="9b45fcdc-a00d-4371-b303-170a67f57311"
+        bottom_offset="90"
+    >
+        <a href="https://www.expertise.ai/?utm_source=widget&utm_medium=referral">expertise.ai - AI SDR Agent</a>
+    </chat-bot>
+
+  </body>
+</html>
+
