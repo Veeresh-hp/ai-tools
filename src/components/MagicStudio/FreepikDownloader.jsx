@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Download, Link as LinkIcon, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
 
 const STUDIO_API_BASE = process.env.NODE_ENV === 'production'
-    ? (process.env.REACT_APP_STUDIO_API_URL || 'https://your-studio-backend.onrender.com')
+    ? (process.env.REACT_APP_STUDIO_API_URL || 'https://aitools-backend-kh4a.onrender.com')
     : 'http://localhost:8000';
 
 const FreepikDownloader = () => {

@@ -4,7 +4,7 @@ import { Upload, X, Eraser, Download, RefreshCw, AlertCircle, RotateCcw, Brush, 
 import axios from 'axios';
 
 const STUDIO_API_BASE = process.env.NODE_ENV === 'production'
-    ? (process.env.REACT_APP_STUDIO_API_URL || 'https://your-studio-backend.onrender.com')
+    ? (process.env.REACT_APP_STUDIO_API_URL || 'https://aitools-backend-kh4a.onrender.com')
     : 'http://localhost:8000';
 
 const LogoRemover = ({ projectToEdit, clearProject }) => {
