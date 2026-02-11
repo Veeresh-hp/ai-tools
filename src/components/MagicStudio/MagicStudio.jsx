@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 
 const MagicStudio = () => {
-    const [activeTab, setActiveTab] = useState('remover');
+    const [activeTab, setActiveTab] = useState('freepik'); // Default to Freepik Downloader
     const [projectToEdit, setProjectToEdit] = useState(null);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const history = useHistory();
@@ -21,10 +21,43 @@ const MagicStudio = () => {
         setActiveTab('remover');
     };
 
+    // Dynamic Background Logic
+    const getBackgroundImage = () => {
+        switch(activeTab) {
+            case 'bg-remover': 
+                return require('../../assets/magic_bg_optimized.jpg'); // Fantasy Fire
+            case 'enhancer': 
+                return require('../../assets/enhancer_dark_bg.png'); // Dark 16:9 Background
+            case 'remover':
+                return require('../../assets/tourist_bg.jpg'); // Tourist
+            case 'projects':
+                return require('../../assets/history_bg.jpg'); // History/Projects
+            case 'support':
+                return require('../../assets/help_bg.png'); // Help/Support
+            case 'upgrade':
+                return require('../../assets/pricing-bg.png'); // Pricing/Upgrade
+            case 'freepik':
+                return require('../../assets/retro_bg.jpg'); // Retro Sky
+            default:
+                return require('../../assets/magic_studio_bg.jpg'); // Default (Indigenous)   
+        }
+    };
+
     return (
         <div className="flex h-screen font-sans text-slate-50 overflow-hidden selection:bg-violet-500/30 relative studio-noise">
-            {/* Mesh Gradient Local to Studio */}
-            <div className="mesh-gradient" />
+            {/* dynamic Background Image - Restricted to Content Area (Right of Sidebar on Desktop) */}
+            <div className="fixed inset-0 md:left-72 z-0 transition-opacity duration-700 ease-in-out">
+                {/* We use a key to force re-render/fade when image changes, or just let CSS replace it */}
+                 <div 
+                    key={activeTab} 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-fade-in"
+                    style={{
+                        backgroundImage: `url(${getBackgroundImage()})`,
+                    }}
+                />
+                {/* Contrast Overlay: Essential for white text on bright backgrounds */}
+                <div className="absolute inset-0 bg-black/50" />
+            </div>
             
             {/* Sidebar Replicated from Original Tools */}
             <StudioSidebar 

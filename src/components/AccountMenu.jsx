@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { useHistory } from 'react-router-dom';
 import { motion as m, AnimatePresence } from 'framer-motion';
-import { FaCrown, FaUser, FaQuestionCircle, FaSignOutAlt, FaHistory, FaShieldAlt, FaEnvelope } from 'react-icons/fa';
+import { FaCrown, FaUser, FaQuestionCircle, FaSignOutAlt, FaHistory, FaShieldAlt, FaEnvelope, FaHeart } from 'react-icons/fa';
 import AuthModal from './AuthModal';
 
 
@@ -103,6 +103,7 @@ import AuthModal from './AuthModal';
 
   const items = isLoggedIn ? [
     ...(isAdmin && isMobile ? [{ key: 'admin', label: 'Admin Dashboard', icon: <FaShieldAlt className="opacity-80" />, onClick: () => go('/admin', 'admin') }] : []),
+    { key: 'favorites', label: 'Favorites', icon: <FaHeart className="opacity-80" />, onClick: () => go('/favorites', 'favorites') },
     { key: 'history', label: 'History', icon: <FaHistory className="opacity-80" />, onClick: () => go('/history', 'history') },
     { key: 'upgrade', label: 'Upgrade plan', icon: <FaCrown className="opacity-80" />, onClick: () => go('/upgrade', 'upgrade') },
     { key: 'profile', label: 'Profile', icon: <FaUser className="opacity-80" />, onClick: () => go('/profile', 'profile') },

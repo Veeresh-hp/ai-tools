@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FaHome, FaPlus, FaHeart, FaNewspaper, FaLayerGroup } from 'react-icons/fa';
+import { FaHome, FaPlus, FaNewspaper, FaLayerGroup } from 'react-icons/fa';
+import { Wand2, Sparkles } from 'lucide-react';
 import AccountMenu from './AccountMenu';
 
 export default function MobileBottomNav() {
@@ -9,14 +10,40 @@ export default function MobileBottomNav() {
   const [activeIndex, setActiveIndex] = useState(0);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
+  // Custom Studio Icon with Animation
+  const StudioIcon = () => (
+    <div className="relative group">
+       {/* Animated Glow Background behind icon */}
+       <div className="absolute inset-0 bg-violet-500/30 blur-md rounded-full animate-pulse md:group-hover:block hidden" />
+       
+       <div className="relative">
+          <Wand2 size={22} className="text-inherit" />
+          
+          {/* Floating Sparkles */}
+          <Sparkles 
+            size={10} 
+            className="absolute -top-2 -right-2 text-yellow-300 animate-spin-slow" 
+            style={{ animationDuration: '3s' }}
+          />
+       </div>
+    </div>
+  );
+
   // Configuration for the menu items matching app routes
   const menuItems = useMemo(() => [
-    { name: 'Home', icon: <FaHome size={20} />, path: '/' },
-    { name: 'Favs', icon: <FaHeart size={20} />, path: '/favorites' },
-    { name: 'Blog', icon: <FaNewspaper size={20} />, path: '/blog' },
-    { name: 'Add', icon: <FaPlus size={20} />, path: '/add-tool' },
-    { name: 'Stacks', icon: <FaLayerGroup size={20} />, path: '/stacks' },
-    { name: 'Profile', isProfile: true, path: '/profile' }, // Profile uses AccountMenu
+    { name: 'Home', icon: <FaHome size={20} />, path: '/', color: 'bg-[#FF6B00]', shadow: 'shadow-orange-500/40' },
+    { 
+        name: 'Studio', 
+        icon: <StudioIcon />, 
+        path: '/magic-studio', 
+        color: 'bg-violet-600', 
+        shadow: 'shadow-violet-600/50',
+        isSpecial: true 
+    },
+    { name: 'Blog', icon: <FaNewspaper size={20} />, path: '/blog', color: 'bg-[#FF6B00]', shadow: 'shadow-orange-500/40' },
+    { name: 'Add', icon: <FaPlus size={20} />, path: '/add-tool', color: 'bg-[#FF6B00]', shadow: 'shadow-orange-500/40' },
+    { name: 'Stacks', icon: <FaLayerGroup size={20} />, path: '/stacks', color: 'bg-[#FF6B00]', shadow: 'shadow-orange-500/40' },
+    { name: 'Profile', isProfile: true, path: '/profile', color: 'bg-[#FF6B00]', shadow: 'shadow-orange-500/40' }, 
   ], []);
   
   const itemCount = menuItems.length;
@@ -29,9 +56,6 @@ export default function MobileBottomNav() {
       if (item.path === '/') return currentPath === '/';
       return currentPath.startsWith(item.path);
     });
-    // If no match (e.g. /history), we might want to unselect or maybe default to none? 
-    // But for now, existing logic sets to 0 if not found which might be misleading.
-    // Let's keep existing logic but arguably 0 is fallback.
     if (index !== -1) setActiveIndex(index);
     else setActiveIndex(0); 
   }, [location.pathname, menuItems]);
@@ -91,7 +115,7 @@ export default function MobileBottomNav() {
                 transform: `translateX(${activeIndex * 100}%)` 
             }}
         >
-             <div className={`w-14 h-14 bg-[#FF6B00] rounded-full shadow-lg shadow-orange-500/40 flex items-center justify-center text-white ${activeItem.isProfile ? 'pointer-events-auto' : ''}`}>
+             <div className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-white transition-colors duration-300 ${activeItem.color || 'bg-[#FF6B00]'} ${activeItem.shadow || 'shadow-orange-500/40'} ${activeItem.isProfile ? 'pointer-events-auto' : ''}`}>
                  {activeItem.isProfile ? (
                      <div className="flex items-center justify-center w-full h-full">
                         <AccountMenu compact={true} transparent={true} isMobile={isMobile} />

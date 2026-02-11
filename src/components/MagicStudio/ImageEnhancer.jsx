@@ -156,7 +156,7 @@ const ImageEnhancer = () => {
             {/* Upload Area */}
             {!file && (
                 <div
-                    className="border-2 border-dashed border-[#3f3f46] rounded-3xl bg-[#18181b] p-16 text-center hover:border-[#8b5cf6] transition-all cursor-pointer group relative overflow-hidden"
+                    className="relative rounded-3xl overflow-hidden group cursor-pointer"
                     onClick={() => document.getElementById('file-upload').click()}
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={(e) => {
@@ -164,35 +164,36 @@ const ImageEnhancer = () => {
                         if (e.dataTransfer.files.length) handleFileChange(e.dataTransfer.files[0]);
                     }}
                 >
-                    <input
-                        type="file"
-                        id="file-upload"
-                        className="hidden"
-                        accept="image/*"
-                        onChange={(e) => e.target.files.length && handleFileChange(e.target.files[0])}
-                    />
-                    
-                    <div className="relative z-10">
-                        <div className="mb-6 inline-flex p-4 rounded-2xl bg-[#27272a] group-hover:bg-[#3f3f46] transition-colors shadow-lg">
-                             <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-xl flex items-center justify-center">
-                                <Upload className="w-6 h-6 text-white" />
-                             </div>
-                        </div>
+                    {/* Glassmorphism Card */}
+                    <div className="bg-black/40 backdrop-blur-xl border border-white/10 p-16 text-center transition-all duration-300 hover:bg-black/50 group-hover:scale-[1.01] shadow-2xl">
                         
-                        <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-400 mb-3">
-                            Drag image here
-                        </h3>
-                        <p className="text-zinc-500 text-sm mb-8">
-                            Support upload format: JPG, PNG, WEBP
-                        </p>
+                        <input
+                            type="file"
+                            id="file-upload"
+                            className="hidden"
+                            accept="image/*"
+                            onChange={(e) => e.target.files.length && handleFileChange(e.target.files[0])}
+                        />
 
-                        <button className="bg-[#8b5cf6] hover:bg-[#7c3aed] text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg shadow-violet-500/25 transition-all transform hover:scale-105 flex items-center gap-2 mx-auto">
-                            <Upload className="w-5 h-5 pointer-events-none" /> Upload Here
-                        </button>
+                        <div className="relative z-10 flex flex-col items-center">
+                            
+                            {/* Icon Container */}
+                            <div className="mb-6 w-20 h-20 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner group-hover:bg-white/10 transition-colors">
+                                <Upload className="w-8 h-8 text-white/80 group-hover:text-white transition-colors" />
+                            </div>
+
+                            <h3 className="text-3xl font-bold text-white mb-3 tracking-tight">
+                                Drop your image here
+                            </h3>
+                            <p className="text-zinc-400 text-sm mb-10 font-medium tracking-wide">
+                                Support PNG, JPG, or WEBP (Max 10MB)
+                            </p>
+
+                            <button className="bg-[#8b5cf6] hover:bg-[#7c3aed] text-white px-10 py-3.5 rounded-full font-bold text-lg shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-all transform group-hover:scale-105 active:scale-95">
+                                Select File
+                            </button>
+                        </div>
                     </div>
-
-                    {/* Background decoration */}
-                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-[#8b5cf6]/5 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
             )}
 
@@ -245,8 +246,8 @@ const ImageEnhancer = () => {
                 <div className="space-y-6">
                     <div className="bg-black/30 rounded-xl overflow-hidden border border-white/10 shadow-2xl relative h-[600px] max-h-[70vh]">
                         <ReactCompareSlider
-                            itemOne={<ReactCompareSliderImage src={result.original_url} alt="Original" />}
-                            itemTwo={<ReactCompareSliderImage src={result.enhanced_url} alt="Enhanced" />}
+                            itemOne={<ReactCompareSliderImage src={result.original_url} alt="Original" className="object-contain w-full h-full" />}
+                            itemTwo={<ReactCompareSliderImage src={result.enhanced_url} alt="Enhanced" className="object-contain w-full h-full" />}
                             style={{ width: '100%', height: '100%' }}
                             portrait={false}
                         />
