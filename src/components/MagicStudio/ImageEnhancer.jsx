@@ -3,7 +3,9 @@ import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slide
 import { Upload, X, Zap, Sparkles, Download, RefreshCw, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 
-const STUDIO_API_BASE = 'http://localhost:8000';
+const STUDIO_API_BASE = process.env.NODE_ENV === 'production'
+    ? (process.env.REACT_APP_STUDIO_API_URL || 'https://your-studio-backend.onrender.com')
+    : 'http://localhost:8000';
 
 const ImageEnhancer = () => {
     const [file, setFile] = useState(null);

@@ -3,7 +3,9 @@ import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slide
 import { Upload, X, Eraser, Download, RefreshCw, AlertCircle, RotateCcw, Brush, Sparkles, MousePointer2 } from 'lucide-react';
 import axios from 'axios';
 
-const STUDIO_API_BASE = 'http://localhost:8000';
+const STUDIO_API_BASE = process.env.NODE_ENV === 'production'
+    ? (process.env.REACT_APP_STUDIO_API_URL || 'https://your-studio-backend.onrender.com')
+    : 'http://localhost:8000';
 
 const LogoRemover = ({ projectToEdit, clearProject }) => {
     const [file, setFile] = useState(null);
@@ -479,4 +481,8 @@ const LogoRemover = ({ projectToEdit, clearProject }) => {
                     </button>
                 </div>
             )}
-        </d
+        </div>
+    );
+};
+
+export default LogoRemover;

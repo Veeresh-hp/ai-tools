@@ -2,7 +2,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Download, Link as LinkIcon, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
 
-const STUDIO_API_BASE = 'http://localhost:8000';
+const STUDIO_API_BASE = process.env.NODE_ENV === 'production'
+    ? (process.env.REACT_APP_STUDIO_API_URL || 'https://your-studio-backend.onrender.com')
+    : 'http://localhost:8000';
 
 const FreepikDownloader = () => {
     const [url, setUrl] = useState('');
@@ -38,6 +40,7 @@ const FreepikDownloader = () => {
         }
     };
 
+    // eslint-disable-next-line no-unused-vars
     const handleDownload = async () => {
         if (!result) return;
         try {
