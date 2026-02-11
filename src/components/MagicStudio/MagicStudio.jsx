@@ -8,10 +8,12 @@ import MyProjects from './MyProjects';
 import Support from './Support';
 import PricingPlansComponent from '../PricingPlans';
 import { useHistory } from 'react-router-dom';
+import { Menu } from 'lucide-react';
 
 const MagicStudio = () => {
     const [activeTab, setActiveTab] = useState('remover');
     const [projectToEdit, setProjectToEdit] = useState(null);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const history = useHistory();
 
     const handleEditAgain = (project) => {
@@ -25,28 +27,49 @@ const MagicStudio = () => {
             <div className="mesh-gradient" />
             
             {/* Sidebar Replicated from Original Tools */}
-            <StudioSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+            <StudioSidebar 
+                activeTab={activeTab} 
+                setActiveTab={setActiveTab} 
+                isOpen={isMobileMenuOpen}
+                setIsOpen={setIsMobileMenuOpen}
+            />
+
+            {/* Mobile Overlay */}
+            {isMobileMenuOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden animate-fade-in"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                />
+            )}
 
             {/* Main Content Area */}
             <main className="flex-1 flex flex-col h-full relative overflow-y-auto custom-scrollbar">
                 
                 {/* Top Bar replicated from original */}
-                <header className="h-16 flex items-center justify-between px-8 border-b border-white/[0.05] backdrop-blur-md bg-black/10 shrink-0 sticky top-0 z-20">
-                    <div className="flex items-center gap-2">
+                <header className="h-16 flex items-center justify-between px-4 md:px-8 border-b border-white/[0.05] backdrop-blur-md bg-black/10 shrink-0 sticky top-0 z-20">
+                    <div className="flex items-center gap-3">
+                        {/* Mobile Menu Toggle */}
+                        <button 
+                            onClick={() => setIsMobileMenuOpen(true)}
+                            className="md:hidden p-2 -ml-2 text-zinc-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors"
+                        >
+                            <Menu className="w-6 h-6" />
+                        </button>
+
                          <span className="bg-violet-600/10 text-violet-400 px-3 py-1 rounded-full text-[10px] font-bold border border-violet-500/20 tracking-wider uppercase">
                             Premium Access
                         </span>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 md:gap-4">
                         <button 
                             onClick={() => history.push('/')}
-                            className="bg-[#27272a] hover:bg-[#3f3f46] text-white px-4 py-2 rounded-full text-sm font-semibold transition-all"
+                            className="bg-[#27272a] hover:bg-[#3f3f46] text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all whitespace-nowrap"
                         >
-                            Exit Studio
+                            Exit
                         </button>
                         <button 
                             onClick={() => setActiveTab('upgrade')}
-                            className="bg-white text-black hover:bg-zinc-200 px-4 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2"
+                            className="bg-white text-black hover:bg-zinc-200 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold transition-all flex items-center gap-1 md:gap-2 whitespace-nowrap"
                         >
                             <span className="text-yellow-500">👑</span> Upgrade
                         </button>
@@ -54,11 +77,11 @@ const MagicStudio = () => {
                 </header>
 
                 {/* Tool Content Area */}
-                <div className="flex-1 p-8 flex items-center justify-center">
+                <div className="flex-1 p-4 md:p-8 flex items-center justify-center">
                     <div className="w-full max-w-5xl">
                         {/* Header for Active Tool replicates original App.jsx logic */}
-                        <div className="text-center mb-10">
-                            <h2 className="text-3xl font-bold text-white mb-2">
+                        <div className="text-center mb-6 md:mb-10">
+                            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
                                 {activeTab === 'remover' && 'AI Image Object Remover'}
                                 {activeTab === 'freepik' && 'Freepik Premium Downloader'}
                                 {activeTab === 'enhancer' && 'AI Image Enhancer'}
@@ -68,7 +91,7 @@ const MagicStudio = () => {
                                 {activeTab === 'upgrade' && 'Premium Plans & Upgrades'}
                                 {(activeTab === 'video-remover' || activeTab === 'text-remover') && 'Feature Coming Soon'}
                             </h2>
-                            <p className="text-zinc-400">
+                            <p className="text-zinc-400 text-sm md:text-base px-4">
                                  {activeTab === 'remover' && 'Remove unwanted objects, people, text, or logos from images in seconds.'}
                                  {activeTab === 'freepik' && 'Download high-quality premium images from Freepik for free.'}
                                  {activeTab === 'enhancer' && 'Upscale and de-noise your images with advanced AI.'}
@@ -91,9 +114,9 @@ const MagicStudio = () => {
                             {activeTab === 'upgrade' && <PricingPlansComponent isInline={true} />}
 
                             {(activeTab === 'video-remover' || activeTab === 'text-remover') && (
-                                <div className="glass-card rounded-[2.5rem] p-20 text-center">
+                                <div className="glass-card rounded-[2.5rem] p-10 md:p-20 text-center">
                                     <div className="text-5xl mb-6">🚧</div>
-                                    <h3 className="text-2xl font-bold text-white">Feature Coming Soon</h3>
+                                    <h3 className="text-xl md:text-2xl font-bold text-white">Feature Coming Soon</h3>
                                     <p className="text-zinc-400 mt-4 max-w-sm mx-auto">This tool is currently in active development and will be available to premium members shortly.</p>
                                 </div>
                             )}
