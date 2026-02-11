@@ -10,6 +10,15 @@ import PricingPlansComponent from '../PricingPlans';
 import { useHistory } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 
+import magicBgOptimized from '../../assets/magic_bg_optimized.jpg';
+import enhancerDarkBg from '../../assets/enhancer_dark_bg.png';
+import touristBg from '../../assets/tourist_bg.jpg';
+import historyBg from '../../assets/history_bg.jpg';
+import helpBg from '../../assets/help_bg.png';
+import pricingBg from '../../assets/pricing-bg.png';
+import retroBg from '../../assets/retro_bg.jpg';
+import magicStudioBg from '../../assets/magic_studio_bg.jpg';
+
 const MagicStudio = () => {
     const [activeTab, setActiveTab] = useState('freepik'); // Default to Freepik Downloader
     const [projectToEdit, setProjectToEdit] = useState(null);
@@ -25,21 +34,21 @@ const MagicStudio = () => {
     const getBackgroundImage = () => {
         switch(activeTab) {
             case 'bg-remover': 
-                return require('../../assets/magic_bg_optimized.jpg'); // Fantasy Fire
+                return magicBgOptimized; // Fantasy Fire
             case 'enhancer': 
-                return require('../../assets/enhancer_dark_bg.png'); // Dark 16:9 Background
+                return enhancerDarkBg; // Dark 16:9 Background
             case 'remover':
-                return require('../../assets/tourist_bg.jpg'); // Tourist
+                return touristBg; // Tourist
             case 'projects':
-                return require('../../assets/history_bg.jpg'); // History/Projects
+                return historyBg; // History/Projects
             case 'support':
-                return require('../../assets/help_bg.png'); // Help/Support
+                return helpBg; // Help/Support
             case 'upgrade':
-                return require('../../assets/pricing-bg.png'); // Pricing/Upgrade
+                return pricingBg; // Pricing/Upgrade
             case 'freepik':
-                return require('../../assets/retro_bg.jpg'); // Retro Sky
+                return retroBg; // Retro Sky
             default:
-                return require('../../assets/magic_studio_bg.jpg'); // Default (Indigenous)   
+                return magicStudioBg; // Default (Indigenous)   
         }
     };
 
