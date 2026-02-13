@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
-import { Upload, X, Download, RotateCcw, Sparkles, Layers, AlertCircle } from 'lucide-react';
+import { Upload, X, Download, RotateCcw, Sparkles, Layers, AlertCircle, Flag } from 'lucide-react';
 import axios from 'axios';
+import ReportModal from '../ReportModal';
 
 const STUDIO_API_BASE = process.env.NODE_ENV === 'production'
     ? (process.env.REACT_APP_STUDIO_API_URL || 'https://aitools-backend-kh4a.onrender.com')
@@ -13,6 +14,10 @@ const BackgroundRemover = () => {
     const [result, setResult] = useState(null); // { original_url, cleaned_url }
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
+    // Tool info for report modal
+    const toolInfo = { _id: 'background-remover', name: 'Background Remover' };
 
     const handleFileChange = (selectedFile) => {
         if (!selectedFile) return;
@@ -291,6 +296,23 @@ const BackgroundRemover = () => {
                         </button>
                     </div>
                 )}
+                
+                {/* Report Issue Button */}
+                <div className="flex justify-center pt-8">
+                    <button
+                    onClick={() => setIsReportModalOpen(true)}
+                    className="flex items-center gap-2 text-zinc-200 hover:text-white transition-colors text-sm font-medium bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full border border-white/10 hover:border-white/20 shadow-lg shadow-black/20"
+                >
+                    <Flag className="w-4 h-4" /> Report Issue
+                </button>
+                </div>
+
+                {/* Report Modal */}
+                <ReportModal 
+                    isOpen={isReportModalOpen} 
+                    onClose={() => setIsReportModalOpen(false)} 
+                    tool={toolInfo}
+                />
             </div>
         </div>
     );

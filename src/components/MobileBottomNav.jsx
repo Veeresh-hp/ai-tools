@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FaHome, FaPlus, FaNewspaper, FaLayerGroup } from 'react-icons/fa';
+import { FaHome, FaPlus, FaNewspaper, FaBook } from 'react-icons/fa';
 import { Wand2, Sparkles } from 'lucide-react';
 import AccountMenu from './AccountMenu';
 
@@ -42,7 +42,7 @@ export default function MobileBottomNav() {
     },
     { name: 'Blog', icon: <FaNewspaper size={20} />, path: '/blog', color: 'bg-[#FF6B00]', shadow: 'shadow-orange-500/40' },
     { name: 'Add', icon: <FaPlus size={20} />, path: '/add-tool', color: 'bg-[#FF6B00]', shadow: 'shadow-orange-500/40' },
-    { name: 'Stacks', icon: <FaLayerGroup size={20} />, path: '/stacks', color: 'bg-[#FF6B00]', shadow: 'shadow-orange-500/40' },
+    { name: 'Library', icon: <FaBook size={20} />, path: '/library', color: 'bg-[#FF6B00]', shadow: 'shadow-orange-500/40' },
     { name: 'Profile', isProfile: true, path: '/profile', color: 'bg-[#FF6B00]', shadow: 'shadow-orange-500/40' }, 
   ], []);
   

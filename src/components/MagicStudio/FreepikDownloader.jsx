@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { Download, Link as LinkIcon, AlertCircle, Loader2, CheckCircle2, History, Trash2, HelpCircle } from 'lucide-react';
+import { Download, Link as LinkIcon, AlertCircle, Loader2, CheckCircle2, History, Trash2, HelpCircle, Flag } from 'lucide-react';
 import FreepikInstructions from './FreepikInstructions';
+import ReportModal from '../ReportModal';
 
 const STUDIO_API_BASE = process.env.NODE_ENV === 'production'
     ? (process.env.REACT_APP_STUDIO_API_URL || 'https://aitools-backend-kh4a.onrender.com')
@@ -13,6 +14,10 @@ const FreepikDownloader = () => {
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
     const [showInstructions, setShowInstructions] = useState(false);
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
+    // Tool info for the report modal
+    const toolInfo = { _id: 'freepik-downloader', name: 'Freepik Downloader' };
     
     // Load history from local storage
     const [history, setHistory] = useState(() => {
@@ -103,18 +108,18 @@ const FreepikDownloader = () => {
     return (
         <div className="max-w-4xl mx-auto space-y-12">
             {/* Input Section */}
-            <div className="bg-[#18181b] p-8 md:p-12 rounded-[2.5rem] border border-[#27272a] shadow-2xl relative overflow-hidden group">
+            <div className="bg-[#18181b] p-6 md:p-12 rounded-[2.5rem] border border-[#27272a] shadow-2xl relative overflow-hidden group">
                  {/* Background Glow */}
                  <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
                 <div className="relative z-10">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8 text-center md:text-left">
                         <div className="flex items-center gap-6">
-                            <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/20">
-                                <Download className="w-8 h-8 text-white" />
+                            <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/20">
+                                <Download className="w-6 h-6 md:w-8 md:h-8 text-white" />
                             </div>
                             <div>
-                                <h2 className="text-3xl font-bold text-white mb-2">Freepik Downloader</h2>
+                                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Freepik Downloader</h2>
                                 <p className="text-zinc-400 text-lg">Paste a Premium link to unlock the full-resolution image instantly.</p>
                             </div>
                         </div>
@@ -129,7 +134,7 @@ const FreepikDownloader = () => {
                         </button>
                     </div>
 
-                    <div className="flex flex-col md:flex-row gap-4">
+                    <div className="flex flex-col md:flex-row gap-4 pt-4 md:pt-0">
                         <div className="relative flex-1 group/input">
                             <LinkIcon className={`absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 transition-colors ${url.includes('freepik') ? 'text-green-500' : 'text-zinc-500'}`} />
                             <input
@@ -153,7 +158,7 @@ const FreepikDownloader = () => {
                         <button
                             onClick={handleProcess}
                             disabled={loading || !url}
-                            className="bg-green-600 hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 px-10 rounded-2xl shadow-xl shadow-green-600/20 transition-all flex items-center justify-center gap-3 transform hover:scale-[1.02] active:scale-[0.98]"
+                            className="bg-green-600 hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 md:py-4 md:px-10 rounded-2xl shadow-xl shadow-green-600/20 transition-all flex items-center justify-center gap-3 transform hover:scale-[1.02] active:scale-[0.98]"
                         >
                             {loading ? (
                                 <>
@@ -179,10 +184,10 @@ const FreepikDownloader = () => {
 
             {/* Instructions Modal Overlay */}
             {showInstructions && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-sm overflow-y-auto">
-                    <div className="w-full h-full relative" onClick={(e) => {
+                <div className="fixed inset-0 z-50 flex justify-center p-4 bg-black/95 backdrop-blur-sm overflow-y-auto" onClick={(e) => {
                        if(e.target === e.currentTarget) setShowInstructions(false)
                     }}>
+                    <div className="w-full relative">
                         <FreepikInstructions onClose={() => setShowInstructions(false)} />
                     </div>
                 </div>
@@ -200,7 +205,7 @@ const FreepikDownloader = () => {
             {/* Result Section */}
             {result && !loading && (
                 <div className="bg-[#18181b] rounded-[2.5rem] overflow-hidden border border-[#27272a] shadow-2xl animate-fade-in-up md:flex">
-                    <div className="relative h-[400px] md:h-auto md:w-1/2 bg-[#09090b] flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-[#27272a]">
+                    <div className="relative h-64 md:h-auto md:w-1/2 bg-[#09090b] flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-[#27272a]">
                          {/* Checkered pattern for transparent images */}
                          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `linear-gradient(45deg, #333 25%, transparent 25%), linear-gradient(-45deg, #333 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #333 75%), linear-gradient(-45deg, transparent 75%, #333 75%)`, backgroundSize: '20px 20px', backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px' }}></div>
                          
@@ -211,7 +216,7 @@ const FreepikDownloader = () => {
                         />
                     </div>
                     
-                    <div className="p-8 md:p-12 md:w-1/2 flex flex-col justify-center bg-gradient-to-br from-[#18181b] to-[#121215]">
+                    <div className="p-6 md:p-12 md:w-1/2 flex flex-col justify-center bg-gradient-to-br from-[#18181b] to-[#121215]">
                         <div className="mb-8">
                             <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-400 px-4 py-2 rounded-full font-bold text-sm mb-4 border border-green-500/20">
                                 <CheckCircle2 className="w-4 h-4" /> Download Ready
@@ -227,7 +232,7 @@ const FreepikDownloader = () => {
                                 onClick={() => handleDownload(result)}
                                 className="w-full bg-white hover:bg-zinc-200 text-black font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-lg transform hover:-translate-y-1"
                             >
-                                <Download className="w-6 h-6" /> Save to Device
+                                <Download className="w-6 h-6 shrink-0" /> Save to Device
                             </button>
                             <button 
                                 onClick={() => { setResult(null); setUrl(''); }}
@@ -281,6 +286,23 @@ const FreepikDownloader = () => {
                     </div>
                 </div>
             )}
+            
+            {/* Report Issue Button */}
+            <div className="flex justify-center pb-8">
+                <button
+                    onClick={() => setIsReportModalOpen(true)}
+                    className="flex items-center gap-2 text-zinc-200 hover:text-white transition-colors text-sm font-medium bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full border border-white/10 hover:border-white/20 shadow-lg shadow-black/20"
+                >
+                    <Flag className="w-4 h-4" /> Report Issue
+                </button>
+            </div>
+
+            {/* Report Modal */}
+            <ReportModal 
+                isOpen={isReportModalOpen} 
+                onClose={() => setIsReportModalOpen(false)} 
+                tool={toolInfo}
+            />
         </div>
     );
 };

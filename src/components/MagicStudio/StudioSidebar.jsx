@@ -7,9 +7,9 @@ const StudioSidebar = ({ activeTab, setActiveTab, isOpen, setIsOpen }) => {
         { id: 'freepik', icon: Download, label: 'Freepik Downloader', badge: 'New' },
         { id: 'enhancer', icon: Wand2, label: 'Image Enhancer', badge: 'Hot' },
         { id: 'bg-remover', icon: Scissors, label: 'Background Remover', badge: 'Hot' },
-        { id: 'remover', icon: Eraser, label: 'Image Object Remover', badge: 'New' },
-        { id: 'video-remover', icon: Video, label: 'Video Object Remover', badge: 'Beta' },
-        { id: 'text-remover', icon: Type, label: 'Image Text Remover' },
+        { id: 'remover', icon: Eraser, label: 'Image Object/Logo Remover'},
+        { id: 'video-remover', icon: Video, label: 'Video Object Remover', badge: 'Soon' },
+        { id: 'text-remover', icon: Type, label: 'Image Text Remover', badge :'Soon' },
     ];
 
     const handleTabClick = (id) => {
@@ -21,7 +21,7 @@ const StudioSidebar = ({ activeTab, setActiveTab, isOpen, setIsOpen }) => {
 
     return (
         <aside className={`
-            fixed inset-y-0 left-0 z-50 w-72 glass-nav flex flex-col h-full shrink-0 transition-transform duration-300 ease-in-out
+            fixed inset-y-0 left-0 z-[100] md:z-20 w-72 glass-nav flex flex-col h-full shrink-0 transition-transform duration-300 ease-in-out
             md:relative md:translate-x-0
             ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}>
@@ -62,7 +62,7 @@ const StudioSidebar = ({ activeTab, setActiveTab, isOpen, setIsOpen }) => {
                             </div>
                             {item.badge && (
                                 <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold uppercase ${
-                                    item.badge === 'Beta' ? "bg-zinc-800 text-zinc-400" :
+                                    item.badge === 'Soon' ? "bg-zinc-800 text-zinc-400" :
                                     item.badge === 'Hot' ? "bg-orange-500/20 text-orange-400" : ""
                                 }`}>
                                     {item.badge}

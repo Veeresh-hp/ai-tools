@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
-import { Upload, X, Zap, Sparkles, Download, RefreshCw, AlertCircle } from 'lucide-react';
+import { Upload, X, Zap, Sparkles, Download, RefreshCw, AlertCircle, Flag } from 'lucide-react';
 import axios from 'axios';
+import ReportModal from '../ReportModal';
 
 const STUDIO_API_BASE = process.env.NODE_ENV === 'production'
     ? (process.env.REACT_APP_STUDIO_API_URL || 'https://aitools-backend-kh4a.onrender.com')
@@ -15,6 +16,10 @@ const ImageEnhancer = () => {
     const [result, setResult] = useState(null); // { original_url, enhanced_url }
     const [error, setError] = useState(null);
     const [timer, setTimer] = useState(0);
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
+    // Tool info for report modal
+    const toolInfo = { _id: 'image-enhancer', name: 'Image Enhancer' };
     
     const timerRef = useRef(null);
     const abortControllerRef = useRef(null);
@@ -279,6 +284,23 @@ const ImageEnhancer = () => {
                     {error}
                 </div>
             )}
+            
+            {/* Report Issue Button */}
+            <div className="flex justify-center mt-12 pb-8">
+                <button
+                    onClick={() => setIsReportModalOpen(true)}
+                    className="flex items-center gap-2 text-zinc-200 hover:text-white transition-colors text-sm font-medium bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full border border-white/10 hover:border-white/20 shadow-lg shadow-black/20"
+                >
+                    <Flag className="w-4 h-4" /> Report Issue
+                </button>
+            </div>
+
+            {/* Report Modal */}
+            <ReportModal 
+                isOpen={isReportModalOpen} 
+                onClose={() => setIsReportModalOpen(false)} 
+                tool={toolInfo}
+            />
         </div>
     );
 };

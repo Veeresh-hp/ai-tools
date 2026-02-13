@@ -1,6 +1,6 @@
 // App.js
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useLocation, Redirect } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 // --- CONTEXT PROVIDER ---
@@ -23,6 +23,8 @@ import AnnouncementBanner from './components/AnnouncementBanner';
 
 import CinematicLoader from './components/CinematicLoader';
 
+// ... (existing imports)
+
 // --- LAZY-LOADED PAGE COMPONENTS ---
 const Home = lazy(() => import('./components/Home'));
 const Login = lazy(() => import('./components/Login'));
@@ -44,9 +46,12 @@ const Help = lazy(() => import('./components/Help'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./components/TermsOfService'));
 const ComparePage = lazy(() => import('./components/ComparePage'));
-const StackList = lazy(() => import('./components/StackList'));
 const StackDetail = lazy(() => import('./components/StackDetail'));
+const Library = lazy(() => import('./components/Library'));
 const MagicStudio = lazy(() => import('./components/MagicStudio/MagicStudio'));
+
+
+
 
 
 // --- LOADER COMPONENT ---
@@ -104,10 +109,12 @@ const AppWithDetails = () => {
                 <Route path="/privacy" component={PrivacyPolicy} />
                 <Route path="/terms" component={TermsOfService} />
                 <Route path="/compare" component={ComparePage} />
-                <Route exact path="/stacks" component={StackList} />
+                <Route path="/library" component={Library} />
+                <Redirect from="/favorites" to="/library" />
+                <Redirect from="/stacks" to="/library" />
                 <Route path="/stack/:slug" component={StackDetail} />
                 <Route path="/profile" component={UserProfile} />
-                <Route path="/magic-studio" component={MagicStudio} />
+                <Route path="/magic-studio/:toolId?" component={MagicStudio} />
               </Switch>
             </Suspense>
           </main>

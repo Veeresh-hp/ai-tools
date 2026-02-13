@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { HelpCircle, X, ArrowDown, ExternalLink } from 'lucide-react';
 
-const FreepikInstructions = ({ onClose }) => {
+const LogoRemoverInstructions = ({ onClose }) => {
     // Intersection Observer for entry animations
     useEffect(() => {
         const observerOptions = { 
@@ -25,21 +25,21 @@ const FreepikInstructions = ({ onClose }) => {
     const steps = [
         {
             step: "01",
-            title: "Find & Click Share",
-            subtitle: "Open the Freepik asset you desire and look for the 'Share' icon. This is the first step to generating your high-speed download link.",
-            image: "/Images/freepik/Link2.JPG", 
+            title: "Upload Your Image",
+            subtitle: "Drag and drop your image or click to upload. We support high-resolution PNG, JPG, and WEBP formats.",
+            image: "/obj1.JPG", 
         },
         {
             step: "02",
-            title: "Copy the Share Link",
-            subtitle: "A popup will appear with the resource URL. Click the 'Copy' button. Our system is optimized to recognize all Freepik premium and free link structures.",
-            image: "/Images/freepik/link3.JPG",
+            title: "Highlight Object",
+            subtitle: "Use the brush tool to paint over the unwanted object, text, or logo. Adjust the brush size for precision.",
+            image: "/obj3.JPG",
         },
         {
             step: "03",
-            title: "Paste & Download",
-            subtitle: "Head back to our downloader, paste the link into the main search bar, and hit 'Download'. Your file will be processed and ready in seconds.",
-            image: "/Images/freepik/link4.png",
+            title: "Remove & Download",
+            subtitle: "Click 'Remove Now' to let our AI magically erase the object. Preview the result and download your clean image.",
+            image: "/obj2.JPG", 
         }
     ];
 
@@ -62,7 +62,7 @@ const FreepikInstructions = ({ onClose }) => {
                 <div className="fixed top-0 left-0 right-0 z-[60] flex justify-end p-4 pointer-events-none">
                     <button 
                         onClick={onClose}
-                        className="pointer-events-auto p-3 md:p-4 bg-zinc-950/60 backdrop-blur-xl rounded-full text-zinc-400 hover:text-[#00DC82] border border-white/10 hover:border-[#00DC82]/50 transition-all active:scale-90 shadow-2xl"
+                        className="pointer-events-auto p-3 md:p-4 bg-zinc-950/60 backdrop-blur-xl rounded-full text-zinc-400 hover:text-violet-500 border border-white/10 hover:border-violet-500/50 transition-all active:scale-90 shadow-2xl"
                         aria-label="Close"
                     >
                         <X className="w-6 h-6 md:w-8 md:h-8" />
@@ -72,19 +72,19 @@ const FreepikInstructions = ({ onClose }) => {
 
             {/* Massive Header Section */}
             <div className="text-center mb-16 md:mb-32 animate-on-scroll transition-all duration-1000 opacity-0 translate-y-10">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-[#00DC82] mb-6 md:mb-8">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-violet-500 mb-6 md:mb-8">
                     <HelpCircle className="w-4 h-4 md:w-5 md:h-5" />
                     <span className="font-bold tracking-[0.2em] text-[10px] md:text-xs uppercase text-zinc-300">Instructional Guide</span>
                 </div>
 
                 <h2 className="text-4xl md:text-8xl font-black text-white mb-6 md:mb-8 tracking-tighter leading-tight md:leading-[0.9]">
-                    Simple. Fast. <br className="md:hidden" /> <span className="text-[#00DC82]">Professional.</span>
+                    Clean. Magic. <br className="md:hidden" /> <span className="text-violet-500">Perfection.</span>
                 </h2>
 
                 <p className="text-zinc-500 text-base md:text-2xl max-w-3xl mx-auto font-medium px-4">
-                    Master the tool in less than 30 seconds with our streamlined workflow.
+                    Remove unwanted objects in seconds with our professional AI tools.
                 </p>
-
+                
                 <div className="mt-8 flex justify-center">
                     <button 
                          onClick={() => scrollToStep(0)}
@@ -107,12 +107,12 @@ const FreepikInstructions = ({ onClose }) => {
                         {/* Massive Image Container */}
                         <div className="w-full lg:w-[60%] relative group">
                             <div className="absolute top-4 left-4 z-20 lg:hidden">
-                                <span className="bg-[#00DC82] text-black font-black px-4 py-1 rounded-full text-sm shadow-lg shadow-[#00DC82]/20">
+                                <span className="bg-violet-600 text-white font-black px-4 py-1 rounded-full text-sm shadow-lg shadow-violet-600/20">
                                     STEP {step.step}
                                 </span>
                             </div>
 
-                            <div className="absolute -inset-4 bg-gradient-to-tr from-[#00DC82]/20 to-transparent rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 hidden md:block" />
+                            <div className="absolute -inset-4 bg-gradient-to-tr from-violet-600/20 to-transparent rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 hidden md:block" />
                             
                             <div className="relative rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden bg-zinc-900 border-2 md:border-4 border-zinc-800 transition-transform duration-500 group-hover:scale-[1.02] shadow-2xl">
                                 <img 
@@ -133,8 +133,8 @@ const FreepikInstructions = ({ onClose }) => {
                         {/* Text Content */}
                         <div className="w-full lg:w-[40%] space-y-4 md:space-y-8 px-2">
                             <div className="hidden lg:flex items-center gap-4">
-                                <span className="h-[2px] w-12 bg-[#00DC82]" />
-                                <span className="text-[#00DC82] font-black text-xl tracking-widest uppercase">Step {step.step}</span>
+                                <span className="h-[2px] w-12 bg-violet-500" />
+                                <span className="text-violet-500 font-black text-xl tracking-widest uppercase">Step {step.step}</span>
                             </div>
                             
                             <h3 className="text-3xl md:text-6xl font-bold text-white tracking-tight leading-tight">
@@ -156,11 +156,11 @@ const FreepikInstructions = ({ onClose }) => {
                                     }}
                                     className="flex items-center gap-3 text-white font-bold group"
                                 >
-                                    <div className="w-10 h-10 md:w-14 md:h-14 rounded-full border border-zinc-700 flex items-center justify-center group-hover:border-[#00DC82] group-hover:bg-[#00DC82] group-hover:text-black transition-all">
+                                    <div className="w-10 h-10 md:w-14 md:h-14 rounded-full border border-zinc-700 flex items-center justify-center group-hover:border-violet-500 group-hover:bg-violet-500 group-hover:text-white transition-all">
                                         <ArrowDown className={`w-4 h-4 md:w-6 md:h-6 transition-transform ${index === steps.length -1 ? '-rotate-90' : ''}`} />
                                     </div>
-                                    <span className="group-hover:text-[#00DC82] transition-colors uppercase tracking-widest text-xs md:text-sm">
-                                        {index === 2 ? "Finish" : "Next Step"}
+                                    <span className="group-hover:text-violet-500 transition-colors uppercase tracking-widest text-xs md:text-sm">
+                                        {index === steps.length - 1 ? "Start Removing" : "Next Step"}
                                     </span>
                                 </button>
                             </div>
@@ -172,13 +172,13 @@ const FreepikInstructions = ({ onClose }) => {
             {/* High Impact Footer */}
             <div ref={footerRef} className="mt-32 md:mt-48 text-center animate-on-scroll transition-all duration-1000 opacity-0 translate-y-10 px-4">
                 <div className="max-w-4xl mx-auto p-[1px] bg-gradient-to-r from-transparent via-zinc-800 to-transparent mb-12" />
-                <p className="text-zinc-500 text-lg mb-8 uppercase tracking-[0.4em]">Ready to start?</p>
+                <p className="text-zinc-500 text-lg mb-8 uppercase tracking-[0.4em]">Ready to magic?</p>
                 
                 <button 
                     onClick={onClose}
-                    className="w-full md:w-auto bg-[#00DC82] hover:bg-[#00ffa5] text-black font-black px-12 md:px-16 py-5 md:py-6 rounded-xl md:rounded-2xl text-xl md:text-2xl transition-all transform active:scale-95 md:hover:scale-105 hover:shadow-[0_0_40px_rgba(0,220,130,0.4)]"
+                    className="w-full md:w-auto bg-violet-600 hover:bg-violet-500 text-white font-black px-12 md:px-16 py-5 md:py-6 rounded-xl md:rounded-2xl text-xl md:text-2xl transition-all transform active:scale-95 md:hover:scale-105 hover:shadow-[0_0_40px_rgba(124,58,237,0.4)]"
                 >
-                    GO TO DOWNLOADER
+                    GO TO EDITOR
                 </button>
 
                 <div className="mt-8 flex justify-center items-center gap-2 text-zinc-500 hover:text-white transition-colors cursor-pointer group">
@@ -190,4 +190,4 @@ const FreepikInstructions = ({ onClose }) => {
     );
 };
 
-export default FreepikInstructions;
+export default LogoRemoverInstructions;

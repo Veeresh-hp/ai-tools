@@ -103,7 +103,7 @@ import AuthModal from './AuthModal';
 
   const items = isLoggedIn ? [
     ...(isAdmin && isMobile ? [{ key: 'admin', label: 'Admin Dashboard', icon: <FaShieldAlt className="opacity-80" />, onClick: () => go('/admin', 'admin') }] : []),
-    { key: 'favorites', label: 'Favorites', icon: <FaHeart className="opacity-80" />, onClick: () => go('/favorites', 'favorites') },
+    ...(!isMobile ? [{ key: 'favorites', label: 'Favorites', icon: <FaHeart className="opacity-80" />, onClick: () => go('/favorites', 'favorites') }] : []),
     { key: 'history', label: 'History', icon: <FaHistory className="opacity-80" />, onClick: () => go('/history', 'history') },
     { key: 'upgrade', label: 'Upgrade plan', icon: <FaCrown className="opacity-80" />, onClick: () => go('/upgrade', 'upgrade') },
     { key: 'profile', label: 'Profile', icon: <FaUser className="opacity-80" />, onClick: () => go('/profile', 'profile') },

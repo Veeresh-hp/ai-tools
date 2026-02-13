@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion as m } from 'framer-motion';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FaHome, FaRegBookmark, FaPlusSquare, FaInfoCircle, FaEnvelope, FaShieldAlt, FaStar, FaNewspaper, FaLayerGroup, FaMagic } from 'react-icons/fa';
+import { FaHome, FaPlusSquare, FaInfoCircle, FaEnvelope, FaShieldAlt, FaStar, FaNewspaper, FaMagic, FaBook } from 'react-icons/fa';
 import SidebarNavButton from './SidebarNavButton';
 import AccountMenu from './AccountMenu';
 import Logo from '../assets/logo.png';
@@ -156,7 +156,7 @@ const Sidebar = () => {
           </div>
 
           <nav className={`relative flex-1 w-full overflow-y-auto scroll-smooth py-3 sidebar-scrollbar`} style={{ WebkitOverflowScrolling: 'touch' }}>
-            {/* Primary items */}
+            {/* 1. Home */}
             <SidebarNavButton
               ref={el => (navRefs.current[0] = el)}
               active={activeNav === 0}
@@ -165,39 +165,28 @@ const Sidebar = () => {
               aria-label="Home"
               onClick={() => handleNavAction(0, () => { history.push('/?page=1'); window.scrollTo(0, 0); })}
             />
+
+            {/* 2. Magic Studio (Product) */}
             <SidebarNavButton
               active={location.pathname.startsWith('/magic-studio')}
-              icon={<FaMagic className="text-purple-400" />}
-              label={effectiveOpen ? "Magic Studio" : ''}
+              icon={<FaMagic className={`text-purple-400 ${location.pathname.startsWith('/magic-studio') ? 'animate-pulse' : ''}`} />}
+              label={
+                effectiveOpen ? (
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
+                      Magic Studio
+                    </span>
+                    <span className="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-[0_0_10px_rgba(168,85,247,0.4)] animate-pulse">
+                      NEW
+                    </span>
+                  </div>
+                ) : ''
+              }
               aria-label="Magic Studio"
               onClick={() => handleNavAction(10, () => history.push('/magic-studio'))}
             />
-            <SidebarNavButton
-              ref={el => (navRefs.current[1] = el)}
-              active={activeNav === 1}
-              icon={<FaRegBookmark />}
-              label={effectiveOpen ? t('nav_favorites') : ''}
-              aria-label="Favorites"
-              onClick={() => handleNavAction(1, () => history.push('/favorites'))}
-            />
 
-            <SidebarNavButton
-              ref={el => (navRefs.current[3] = el)}
-              active={location.pathname.startsWith('/stacks')}
-              icon={<FaLayerGroup />}
-              label={effectiveOpen ? "My Stacks" : ''}
-              aria-label="My Stacks"
-              onClick={() => handleNavAction(3, () => history.push('/stacks'))}
-            />
-
-            <SidebarNavButton
-              ref={el => (navRefs.current[2] = el)}
-              active={activeNav === 2}
-              icon={<FaPlusSquare />}
-              label={effectiveOpen ? t('nav_submit') : ''}
-              aria-label="Submit Tool"
-              onClick={() => handleNavAction(2, () => history.push('/add-tool'))}
-            />
+            {/* 3. AI Tools Picks (Discovery) */}
             <SidebarNavButton
               ref={el => (navRefs.current[6] = el)}
               active={activeNav === 6}
@@ -207,9 +196,29 @@ const Sidebar = () => {
               onClick={() => handleNavAction(6, () => history.push('/#choice'))}
             />
 
+            {/* 4. Library (Favorites + Stacks) */}
             <SidebarNavButton
-              icon={<FaNewspaper />}
-              label={effectiveOpen ? t('nav_blog') : ''}
+              ref={el => (navRefs.current[1] = el)}
+              active={activeNav === 1 || location.pathname.startsWith('/library')}
+              icon={<FaBook />}
+              label={effectiveOpen ? "Library" : ''}
+              aria-label="Library"
+              onClick={() => handleNavAction(1, () => history.push('/library'))}
+            />
+
+            {/* 6. Blog (Resources) */}
+            <SidebarNavButton
+              icon={<FaNewspaper className="text-orange-400 group-hover:rotate-6 transition-transform" />}
+              label={
+                effectiveOpen ? (
+                  <div className="flex items-center gap-2">
+                    <span>{t('nav_blog')}</span>
+                    <span className="bg-orange-500/10 text-orange-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-orange-500/20 shadow-[0_0_8px_rgba(249,115,22,0.2)]">
+                      LATEST
+                    </span>
+                  </div>
+                ) : ''
+              }
               active={location.pathname === '/blog'}
               onClick={() => {
                   history.push('/blog');
@@ -217,6 +226,17 @@ const Sidebar = () => {
               }}
             />
 
+            {/* 7. Submit Tool (Community) */}
+            <SidebarNavButton
+              ref={el => (navRefs.current[2] = el)}
+              active={activeNav === 2}
+              icon={<FaPlusSquare />}
+              label={effectiveOpen ? t('nav_submit') : ''}
+              aria-label="Submit Tool"
+              onClick={() => handleNavAction(2, () => history.push('/add-tool'))}
+            />
+
+           {/* 8. Contact (Company) */}
             <SidebarNavButton
               ref={el => (navRefs.current[4] = el)}
               active={activeNav === 4}
@@ -228,6 +248,8 @@ const Sidebar = () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               })}
             />
+
+            {/* 9. About (Company) */}
             <SidebarNavButton
               ref={el => (navRefs.current[5] = el)}
               active={activeNav === 5}

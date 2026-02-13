@@ -7,8 +7,8 @@ import FreepikDownloader from './FreepikDownloader';
 import MyProjects from './MyProjects';
 import Support from './Support';
 import PricingPlansComponent from '../PricingPlans';
-import { useHistory } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { useHistory, useParams } from 'react-router-dom';
+import { Menu, ArrowLeft } from 'lucide-react';
 
 import magicBgOptimized from '../../assets/magic_bg_optimized.jpg';
 import enhancerDarkBg from '../../assets/enhancer_dark_bg.png';
@@ -20,10 +20,18 @@ import retroBg from '../../assets/retro_bg.jpg';
 import magicStudioBg from '../../assets/magic_studio_bg.jpg';
 
 const MagicStudio = () => {
-    const [activeTab, setActiveTab] = useState('freepik'); // Default to Freepik Downloader
+    const { toolId } = useParams();
+    const history = useHistory();
     const [projectToEdit, setProjectToEdit] = useState(null);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const history = useHistory();
+    const [lastActiveTool, setLastActiveTool] = useState(null);
+
+    // Default to 'freepik' if no toolId is provided
+    const activeTab = toolId || 'freepik';
+
+    const setActiveTab = (id) => {
+        history.push(`/magic-studio/${id}`);
+    };
 
     const handleEditAgain = (project) => {
         setProjectToEdit(project);
@@ -55,7 +63,7 @@ const MagicStudio = () => {
     return (
         <div className="flex h-screen font-sans text-slate-50 overflow-hidden selection:bg-violet-500/30 relative studio-noise">
             {/* dynamic Background Image - Restricted to Content Area (Right of Sidebar on Desktop) */}
-            <div className="fixed inset-0 md:left-72 z-0 transition-opacity duration-700 ease-in-out">
+            <div className="fixed top-0 left-0 w-full h-[100lvh] md:top-0 md:right-0 md:bottom-0 md:left-20 z-0 transition-opacity duration-700 ease-in-out">
                 {/* We use a key to force re-render/fade when image changes, or just let CSS replace it */}
                  <div 
                     key={activeTab} 
@@ -109,12 +117,24 @@ const MagicStudio = () => {
                         >
                             Exit
                         </button>
-                        <button 
-                            onClick={() => setActiveTab('upgrade')}
-                            className="bg-white text-black hover:bg-zinc-200 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold transition-all flex items-center gap-1 md:gap-2 whitespace-nowrap"
-                        >
-                            <span className="text-yellow-500">👑</span> Upgrade
-                        </button>
+                        {activeTab === 'upgrade' ? (
+                            <button 
+                                onClick={() => setActiveTab(lastActiveTool || 'freepik')}
+                                className="bg-zinc-800 text-white hover:bg-zinc-700 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold transition-all flex items-center gap-1 md:gap-2 whitespace-nowrap border border-white/10"
+                            >
+                                <ArrowLeft className="w-4 h-4" /> Back to Tool
+                            </button>
+                        ) : (
+                            <button 
+                                onClick={() => {
+                                    setLastActiveTool(activeTab);
+                                    setActiveTab('upgrade');
+                                }}
+                                className="bg-white text-black hover:bg-zinc-200 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold transition-all flex items-center gap-1 md:gap-2 whitespace-nowrap"
+                            >
+                                <span className="text-yellow-500">👑</span> Upgrade
+                            </button>
+                        )}
                     </div>
                 </header>
 
@@ -124,7 +144,7 @@ const MagicStudio = () => {
                         {/* Header for Active Tool replicates original App.jsx logic */}
                         <div className="text-center mb-6 md:mb-10">
                             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                                {activeTab === 'remover' && 'AI Image Object Remover'}
+                                {activeTab === 'remover' && 'AI Image Object/Logo Remover'}
                                 {activeTab === 'freepik' && 'Freepik Premium Downloader'}
                                 {activeTab === 'enhancer' && 'AI Image Enhancer'}
                                 {activeTab === 'bg-remover' && 'AI Background Remover'}

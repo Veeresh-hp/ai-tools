@@ -6,7 +6,7 @@ import api from '../utils/api';
 import SavedBackground from '../assets/Saved-1.png';
 
 // Favorites page: shows user's saved tools with sorting and drag reordering (custom mode only)
-export default function Favorites() {
+export default function Favorites(props) {
   const [favoriteKeys, setFavoriteKeys] = React.useState([]); // raw keys
   const [favoriteTools, setFavoriteTools] = React.useState([]); // materialized tool objects / placeholders
   const [sortMode, setSortMode] = React.useState(() => localStorage.getItem('favorites_sort') || 'custom'); // 'custom' | 'name' | 'date'
@@ -199,9 +199,79 @@ export default function Favorites() {
     );
   };
 
+  if (props.embedded) {
+    return (
+      <div className="text-white relative pb-12">
+        {displayedTools.length === 0 ? (
+          <m.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-8 rounded-3xl border border-white/10 bg-[#0A0A0A] max-w-2xl relative overflow-hidden">
+             {/* Empty state content */}
+             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent opacity-50" />
+            <div className="flex items-start gap-6 relative z-10">
+              <div className="w-16 h-16 rounded-2xl bg-[#FF6B00]/10 border border-[#FF6B00]/20 flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(255,107,0,0.1)]">⭐</div>
+              <div>
+                <h3 className="text-xl font-bold text-white mb-2">No favorites yet</h3>
+                <p className="text-gray-400 leading-relaxed">
+                    Start building your personal AI toolkit. Browse our collection and click the star icon on any tool to save it here for quick access.
+                </p>
+                <button onClick={() => window.location.href = '/'} className="mt-6 px-6 py-2 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-colors">
+                    Browse Tools
+                </button>
+              </div>
+            </div>
+          </m.div>
+        ) : (
+          <>
+            {/* Embedded Controls */}
+             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 bg-[#0A0A0A]/50 p-4 rounded-xl border border-white/5">
+              <p className="text-gray-300 text-sm">Saved: <span className="font-semibold text-white">{displayedTools.length}</span></p>
+              <div className="flex items-center gap-3">
+                <SortDropdown value={sortMode} onChange={setSortMode} />
+                {sortMode !== 'custom' && <span className="hidden sm:inline text-xs text-gray-500 italic">Drag disabled</span>}
+                <button onClick={clearAll} className="px-3 py-2 text-sm rounded-lg bg-[#0A0A0A] border border-white/10 text-gray-400 hover:text-white hover:border-white/30 transition-all">Clear all</button>
+              </div>
+            </div>
+
+            {/* Grid */}
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {displayedTools.map((tool, idx) => {
+                const keyValue = tool.url || tool.name || tool.id || `tool-${idx}`;
+                return (
+                  <div
+                    key={keyValue}
+                    draggable={sortMode === 'custom'}
+                    onDragStart={() => onDragStart(idx)}
+                    onDragEnter={() => onDragEnter(idx)}
+                    onDragEnd={onDragEnd}
+                    className={(draggingIndex === idx ? 'opacity-50 ' : '') + (sortMode === 'custom' ? 'cursor-grab active:cursor-grabbing' : '')}
+                  >
+                    <div className="relative">
+                      <ToolCard tool={tool} />
+
+                      {sortMode === 'custom' && (
+                        <div className="absolute top-2 left-2 bg-black/30 border border-white/10 rounded px-1.5 py-0.5 select-none text-gray-300/80" aria-hidden="true" title="Drag to reorder">
+                          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="block">
+                            <circle cx="6" cy="6" r="1.6" fill="currentColor"/>
+                            <circle cx="10" cy="6" r="1.6" fill="currentColor"/>
+                            <circle cx="14" cy="6" r="1.6" fill="currentColor"/>
+                            <circle cx="6" cy="10" r="1.6" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.6" fill="currentColor"/>
+                            <circle cx="14" cy="10" r="1.6" fill="currentColor"/>
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen text-white relative overflow-hidden pb-24">
-      {/* Global background to match Home */}
       {/* Global background to match Home */}
       <div className="fixed inset-0 z-0">
          <img 

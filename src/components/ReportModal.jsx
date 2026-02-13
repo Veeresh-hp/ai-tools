@@ -127,11 +127,11 @@ const ReportModal = ({ isOpen, onClose, tool }) => {
                     onChange={(e) => setReason(e.target.value)}
                     className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white appearance-none focus:outline-none focus:border-red-500/50 transition-colors"
                   >
-                    <option value="Broken Link">Broken Link</option>
-                    <option value="Outdated Information">Outdated Information</option>
-                    <option value="Duplicate">Duplicate Tool</option>
-                    <option value="Inappropriate Content">Inappropriate Content</option>
-                    <option value="Other">Other</option>
+                    <option value="Broken Link" className="bg-[#12121A] text-white">Broken Link</option>
+                    <option value="Outdated Information" className="bg-[#12121A] text-white">Outdated Information</option>
+                    <option value="Duplicate" className="bg-[#12121A] text-white">Duplicate Tool</option>
+                    <option value="Inappropriate Content" className="bg-[#12121A] text-white">Inappropriate Content</option>
+                    <option value="Other" className="bg-[#12121A] text-white">Other</option>
                   </select>
                   {/* Custom Arrow */}
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none text-xs">▼</div>
