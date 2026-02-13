@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { Download, Link as LinkIcon, AlertCircle, Loader2, CheckCircle2, History, Trash2 } from 'lucide-react';
+import { Download, Link as LinkIcon, AlertCircle, Loader2, CheckCircle2, History, Trash2, HelpCircle } from 'lucide-react';
+import FreepikInstructions from './FreepikInstructions';
 
 const STUDIO_API_BASE = process.env.NODE_ENV === 'production'
     ? (process.env.REACT_APP_STUDIO_API_URL || 'https://aitools-backend-kh4a.onrender.com')
@@ -11,6 +12,7 @@ const FreepikDownloader = () => {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
+    const [showInstructions, setShowInstructions] = useState(false);
     
     // Load history from local storage
     const [history, setHistory] = useState(() => {
@@ -106,14 +108,25 @@ const FreepikDownloader = () => {
                  <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
                 <div className="relative z-10">
-                    <div className="flex flex-col md:flex-row items-center gap-6 mb-8 text-center md:text-left">
-                        <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/20">
-                            <Download className="w-8 h-8 text-white" />
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8 text-center md:text-left">
+                        <div className="flex items-center gap-6">
+                            <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/20">
+                                <Download className="w-8 h-8 text-white" />
+                            </div>
+                            <div>
+                                <h2 className="text-3xl font-bold text-white mb-2">Freepik Downloader</h2>
+                                <p className="text-zinc-400 text-lg">Paste a Premium link to unlock the full-resolution image instantly.</p>
+                            </div>
                         </div>
-                        <div>
-                            <h2 className="text-3xl font-bold text-white mb-2">Freepik Downloader</h2>
-                            <p className="text-zinc-400 text-lg">Paste a Premium link to unlock the full-resolution image instantly.</p>
-                        </div>
+                        
+                        {/* Help Trigger */}
+                        <button 
+                            onClick={() => setShowInstructions(true)}
+                            className="group flex items-center gap-2 px-4 py-2 bg-[#27272a] hover:bg-[#3f3f46] rounded-full border border-white/5 transition-all"
+                        >
+                            <HelpCircle className="w-5 h-5 text-[#00DC82] group-hover:scale-110 transition-transform" />
+                            <span className="text-sm font-bold text-white">How to use?</span>
+                        </button>
                     </div>
 
                     <div className="flex flex-col md:flex-row gap-4">
@@ -161,7 +174,19 @@ const FreepikDownloader = () => {
                         </div>
                     )}
                 </div>
-            </div>
+                </div>
+
+
+            {/* Instructions Modal Overlay */}
+            {showInstructions && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-sm overflow-y-auto">
+                    <div className="w-full h-full relative" onClick={(e) => {
+                       if(e.target === e.currentTarget) setShowInstructions(false)
+                    }}>
+                        <FreepikInstructions onClose={() => setShowInstructions(false)} />
+                    </div>
+                </div>
+            )}
 
             {/* Loading State Overlay */}
             {loading && (
